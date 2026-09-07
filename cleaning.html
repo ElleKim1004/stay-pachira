@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#f5f2eb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="파키라 청소">
+<title>파키라 청소 캘린더</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧹%3C/text%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: #fcfbf8;
+  --card: #ffffff;
+  --ink: #282828;
+  --ink-soft: #6e6e6e;
+  --ink-faint: #bebebe;
+  --line: #dcd7cd;
+  --line-soft: #ede8dd;
+  --sun: #c84646;
+  --sat: #3c64af;
+  --orange: #dc6420;
+  --green: #28694b;
+  --mom-bg: #e6e6e6;
+  --mom-fg: #646464;
+  --f1-bg: #ffeadd; --f1-fg: #8c4614;
+  --f2-bg: #e3f2e8; --f2-fg: #285f3c;
+  --f3-bg: #e8ebf8; --f3-fg: #324691;
+  --f5-bg: #fbe8f0; --f5-fg: #9b325f;
+  --f6-bg: #fdf4d7; --f6-fg: #875f19;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { background: var(--bg); font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: var(--ink); overflow-x: hidden; }
+body { min-height: 100vh; padding-bottom: 20px; }
+header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--line); padding: 12px 16px 8px; }
+.title { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+.subtitle { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+.tabs { display: flex; gap: 6px; margin-top: 12px; }
+.tab { flex: 1; padding: 10px 8px; text-align: center; border: 1px solid var(--line); border-radius: 10px; background: var(--card); font-size: 14px; font-weight: 500; color: var(--ink-soft); cursor: pointer; }
+.tab.active { background: var(--ink); color: white; border-color: var(--ink); }
+.filter-bar { display: flex; gap: 6px; padding: 10px 16px 8px; overflow-x: auto; scrollbar-width: none; }
+.filter-bar::-webkit-scrollbar { display: none; }
+.chip { padding: 6px 12px; border: 1px solid var(--line); border-radius: 20px; background: var(--card); font-size: 12px; white-space: nowrap; cursor: pointer; color: var(--ink-soft); }
+.chip.active { background: var(--ink); color: white; border-color: var(--ink); }
+.summary-strip { display: flex; gap: 6px; padding: 4px 16px 12px; }
+.pill { flex: 1; text-align: center; padding: 6px 4px; background: var(--card); border: 1px solid var(--line-soft); border-radius: 8px; }
+.pill .n { font-size: 15px; font-weight: 700; }
+.pill .l { font-size: 10px; color: var(--ink-soft); }
+.pill.moono .n { color: var(--green); }
+.pill.mom .n { color: var(--mom-fg); }
+.pill.turn .n { color: var(--orange); }
+.cal-wrap { padding: 0 12px; }
+.cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; padding: 8px 0 6px; font-size: 11px; color: var(--ink-soft); font-weight: 500; }
+.cal-weekdays .sun { color: var(--sun); }
+.cal-weekdays .sat { color: var(--sat); }
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid var(--line-soft); border-left: 1px solid var(--line-soft); background: var(--line-soft); gap: 1px; border-radius: 8px; overflow: hidden; }
+.cell { background: var(--card); min-height: 78px; padding: 4px 3px; cursor: pointer; position: relative; transition: background 0.1s; display: flex; flex-direction: column; gap: 2px; }
+.cell:active { background: #f5f2ea; }
+.cell.not-in-month { background: #f7f5ef; }
+.cell.today { background: linear-gradient(180deg, #fff9e6 0%, #fff 40%); }
+.cell.today .date-num { color: #b8860b; font-weight: 800; }
+.date-num { font-size: 12px; font-weight: 600; padding: 2px 4px; }
+.date-num.sun { color: var(--sun); }
+.date-num.sat { color: var(--sat); }
+.date-num.faint { color: var(--ink-faint); font-weight: 400; }
+.evt-pill { display: flex; align-items: center; gap: 3px; padding: 2px 4px; border-radius: 4px; font-size: 10px; font-weight: 600; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.evt-pill.p-1F { background: var(--f1-bg); color: var(--f1-fg); }
+.evt-pill.p-2F { background: var(--f2-bg); color: var(--f2-fg); }
+.evt-pill.p-3F { background: var(--f3-bg); color: var(--f3-fg); }
+.evt-pill.p-5F { background: var(--f5-bg); color: var(--f5-fg); }
+.evt-pill.p-6F { background: var(--f6-bg); color: var(--f6-fg); }
+.evt-pill.mom { background: var(--mom-bg); color: var(--mom-fg); }
+.evt-pill.turnover::before { content: "●"; color: var(--orange); font-size: 8px; }
+.evt-more { font-size: 9px; color: var(--ink-soft); padding: 1px 4px; }
+.money-summary { margin: 16px 16px 0; padding: 14px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+.money-summary h3 { font-size: 13px; color: var(--ink-soft); font-weight: 500; margin-bottom: 8px; }
+.money-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 13px; }
+.money-row.total { border-top: 1px solid var(--line); margin-top: 5px; padding-top: 10px; font-weight: 700; font-size: 15px; }
+.money-row .amount { font-variant-numeric: tabular-nums; }
+.money-row.net .amount { color: var(--green); font-weight: 700; }
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.modal-backdrop.open { opacity: 1; pointer-events: auto; }
+.modal { position: fixed; left: 0; right: 0; bottom: 0; background: var(--bg); border-radius: 16px 16px 0 0; z-index: 201; transform: translateY(100%); transition: transform 0.25s; max-height: 85vh; overflow-y: auto; }
+.modal.open { transform: translateY(0); }
+.modal-header { padding: 12px 16px 8px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); }
+.modal-grip { width: 40px; height: 4px; background: var(--line); border-radius: 2px; margin: 0 auto 10px; }
+.modal-date { font-size: 20px; font-weight: 700; }
+.modal-date .day { font-size: 14px; color: var(--ink-soft); font-weight: 500; margin-left: 6px; }
+.modal-body { padding: 12px 16px 30px; display: flex; flex-direction: column; gap: 10px; }
+.modal-empty { text-align: center; color: var(--ink-faint); padding: 30px 0; font-size: 14px; }
+.detail-card { border: 1px solid var(--line); border-radius: 10px; padding: 12px; background: var(--card); }
+.detail-card.turnover { border-color: var(--orange); border-width: 2px; }
+.detail-card.mom { background: var(--mom-bg); border-color: #ccc; }
+.detail-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.detail-floor { font-size: 15px; font-weight: 700; padding: 4px 10px; border-radius: 6px; }
+.detail-floor.f-1F { background: var(--f1-bg); color: var(--f1-fg); }
+.detail-floor.f-2F { background: var(--f2-bg); color: var(--f2-fg); }
+.detail-floor.f-3F { background: var(--f3-bg); color: var(--f3-fg); }
+.detail-floor.f-5F { background: var(--f5-bg); color: var(--f5-fg); }
+.detail-floor.f-6F { background: var(--f6-bg); color: var(--f6-fg); }
+.detail-name { font-size: 16px; font-weight: 600; flex: 1; }
+.detail-mom .detail-name { color: var(--mom-fg); }
+.detail-cleaner-tag { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; background: var(--green); color: white; }
+.detail-cleaner-tag.mom { background: var(--mom-fg); }
+.detail-info { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; font-size: 13px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.detail-info dt { color: var(--ink-soft); }
+.detail-info dd { color: var(--ink); font-weight: 500; }
+.turnover-banner { margin-top: 8px; padding: 6px 10px; background: rgba(220, 100, 32, 0.1); color: var(--orange); font-size: 12px; font-weight: 600; border-radius: 6px; text-align: center; }
+@media (min-width: 700px) {
+  body { max-width: 700px; margin: 0 auto; }
+  .cell { min-height: 100px; }
+  .modal { max-width: 700px; margin: 0 auto; border-radius: 16px; bottom: 20px; left: 20px; right: 20px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="title">🧹 파키라 청소 캘린더</div>
+  <div class="subtitle">Pachira House · Stay Pachira · 2026</div>
+  <div class="tabs">
+    <div class="tab" data-month="8">8월</div>
+    <div class="tab active" data-month="9">9월</div>
+    <div class="tab" data-month="10">10월</div>
+  </div>
+</header>
+<div class="filter-bar">
+  <div class="chip active" data-filter="all">전체</div>
+  <div class="chip" data-filter="M">Moono</div>
+  <div class="chip" data-filter="H">엄마</div>
+  <div class="chip" data-filter="turnover">같은날 턴오버</div>
+</div>
+<div class="summary-strip" id="summary"></div>
+<div class="cal-wrap">
+  <div class="cal-weekdays">
+    <div class="sun">일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div class="sat">토</div>
+  </div>
+  <div class="cal" id="calendar"></div>
+</div>
+<div class="money-summary" id="moneySummary"></div>
+<div class="modal-backdrop" id="modalBackdrop"></div>
+<div class="modal" id="modal">
+  <div class="modal-header">
+    <div class="modal-grip"></div>
+    <div class="modal-date" id="modalDate"></div>
+  </div>
+  <div class="modal-body" id="modalBody"></div>
+</div>
+<script>
+const BOOKINGS = [
+["2026-07-23","2026-08-04","1F","Huelsmann","M","Booking",null],
+["2026-08-04","2026-08-09","1F","…9339","M","Airbnb",null],
+["2026-08-10","2026-08-12","1F","…0873","M","Airbnb",null],
+["2026-08-13","2026-08-15","1F","current","M","Airbnb",null],
+["2026-07-30","2026-08-07","2F","…0161","M","Airbnb",null],
+["2026-08-10","2026-08-15","2F","…0234","M","Airbnb",null],
+["2026-08-15","2026-08-17","2F","…2473","M","Airbnb",null],
+["2026-08-17","2026-08-21","2F","…0882","M","Airbnb",null],
+["2026-08-21","2026-08-23","2F","…9563","M","Airbnb",null],
+["2026-08-23","2026-08-26","2F","…5482","M","Airbnb",null],
+["2026-07-31","2026-08-09","3F","Familie","M","Booking",null],
+["2026-08-09","2026-08-13","3F","Monika","M","Booking",null],
+["2026-08-13","2026-08-19","3F","Umang","M","Booking",null],
+["2026-08-19","2026-08-22","3F","…2505","M","Airbnb",null],
+["2026-08-22","2026-08-23","3F","…8228","M","Airbnb",null],
+["2026-08-23","2026-08-24","3F","…7104","H","Airbnb",null],
+["2026-08-25","2026-08-30","3F","Vincenza","H","Booking",null],
+["2026-07-30","2026-08-06","5F","…3515","H","Airbnb",null],
+["2026-08-07","2026-08-08","5F","…8332","H","Airbnb",null],
+["2026-08-08","2026-08-09","5F","…3986","H","Airbnb",null],
+["2026-08-13","2026-08-14","5F","BOMIN","H","Booking",null],
+["2026-08-14","2026-08-15","5F","NEW","H","Airbnb",null],
+["2026-08-15","2026-08-18","5F","…2875","M","Airbnb",null],
+["2026-08-20","2026-08-25","5F","…4004","M","Airbnb",null],
+["2026-08-25","2026-08-27","5F","N us","H","Airbnb",null],
+["2026-08-27","2026-08-29","5F","김*미","H","Yanolja",null],
+["2026-08-29","2026-08-30","5F","Bora Lee","H","Booking",null],
+["2026-07-31","2026-08-05","6F","…1500","M","Airbnb",null],
+["2026-08-05","2026-08-06","6F","고*영","H","Yanolja",null],
+["2026-08-06","2026-08-07","6F","김*선","H","Yanolja",null],
+["2026-08-07","2026-08-12","6F","…6922","M","Airbnb",null],
+["2026-08-13","2026-08-22","6F","…6367","M","Airbnb",null],
+["2026-08-22","2026-08-25","6F","…6173","M","Airbnb",null],
+["2026-08-27","2026-08-28","6F","박*빈","M","Yanolja",null],
+["2026-08-28","2026-08-30","6F","…7495","H","Airbnb",null],
+["2026-08-30","2026-09-03","6F","…5313","M","Airbnb",null],
+["2026-08-15","2026-09-04","1F","julia hussmann-medrano","H","Booking","성인 2 · 아동 3"],
+["2026-09-04","2026-09-05","1F","1박 신규","H","Airbnb","1박"],
+["2026-09-07","2026-09-17","1F","Nowak Patrick","H","Booking","성인 4"],
+["2026-09-18","2026-09-20","1F","…3699","M","Airbnb",null],
+["2026-08-28","2026-09-11","2F","Maricela","M","Vrbo",null],
+["2026-09-11","2026-09-17","2F","…2331","M","Airbnb",null],
+["2026-09-19","2026-09-27","2F","…9586","M","Airbnb",null],
+["2026-09-04","2026-09-05","3F","1박 신규","H","?","1박"],
+["2026-09-05","2026-09-13","3F","…9798","M","Airbnb",null],
+["2026-09-13","2026-09-16","3F","Thomas","M","Vrbo",null],
+["2026-09-16","2026-09-20","3F","…2099","M","Airbnb",null],
+["2026-09-21","2026-09-30","3F","Marika Dereń","H","Booking","성인 4"],
+["2026-08-31","2026-09-05","5F","…9773","M","Airbnb",null],
+["2026-09-05","2026-09-06","5F","Robin Kim","H","Booking","성인 4"],
+["2026-09-06","2026-09-10","5F","…9503","M","Airbnb",null],
+["2026-09-11","2026-09-13","5F","HAIXIA Hu","H","Booking","성인 4"],
+["2026-09-18","2026-09-19","5F","서*영","H","Yanolja","성인 2"],
+["2026-09-19","2026-09-20","5F","임*아","H","Yanolja","성인 2"],
+["2026-09-20","2026-09-25","5F","…2062","M","Airbnb",null],
+["2026-09-25","2026-09-28","5F","Shoshana Reuven","M","Booking","성인 4"],
+["2026-09-04","2026-09-11","6F","…7535","M","Airbnb",null],
+["2026-09-12","2026-09-13","6F","Elizabeth Day","H","Booking","성인 5"],
+["2026-09-13","2026-09-17","6F","…9666","M","Airbnb",null],
+["2026-09-17","2026-09-23","6F","Golden Janggut","M","Booking","성인 5"],
+["2026-09-24","2026-10-02","6F","…7654","M","Airbnb",null],
+["2026-10-04","2026-10-07","1F","…3839","M","Airbnb",null],
+["2026-10-10","2026-10-16","2F","…2668","M","Airbnb",null],
+["2026-10-27","2026-10-31","2F","…4540","M","Airbnb",null],
+["2026-10-02","2026-10-09","3F","…0469","M","Airbnb",null],
+["2026-10-09","2026-10-14","3F","…4681","M","Airbnb",null],
+["2026-10-21","2026-10-27","3F","…0949","M","Airbnb",null],
+["2026-09-30","2026-10-04","5F","…1930","M","Airbnb",null],
+["2026-10-08","2026-10-16","5F","…8580","M","Airbnb",null],
+["2026-10-24","2026-10-26","5F","GOTO AARON","M","Booking","성인 6"],
+["2026-10-27","2026-11-01","5F","…3964","M","Airbnb",null],
+["2026-10-02","2026-10-06","6F","…6072","M","Airbnb",null],
+["2026-10-07","2026-10-12","6F","…1499","M","Airbnb",null],
+["2026-10-15","2026-10-19","6F","…9223","M","Airbnb",null],
+["2026-10-24","2026-10-27","6F","…6272","M","Airbnb",null],
+["2026-10-31","2026-11-08","6F","…1648","M","Airbnb",null],
+["2026-10-19","2026-10-23","5F","…1380 (5F+6F)","M","Airbnb","독채"],
+["2026-10-19","2026-10-23","6F","…1380 (5F+6F)","M","Airbnb","독채"],
+["2026-09-28","2026-10-10","2F","Marcelo","H","Vrbo",null],
+];
+const RATES = {"1F":40000,"2F":40000,"3F":50000,"5F":55000,"6F":50000};
+const FLOOR_ORDER = {"1F":1,"2F":2,"3F":3,"5F":5,"6F":6};
+const DAY_NAMES = ["일","월","화","수","목","금","토"];
+let currentMonth = 9;
+let currentFilter = "all";
+function parseDate(s){const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d);}
+function fmtKey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function daysBetween(a,b){return Math.round((b-a)/(24*60*60*1000));}
+function getCheckouts(month){
+  const map = {};
+  for(const b of BOOKINGS){
+    const [ci,co,floor,name,cleaner,plat,extra] = b;
+    const coD = parseDate(co);
+    if(coD.getMonth()+1 !== month) continue;
+    const nights = daysBetween(parseDate(ci), coD);
+    const turnover = BOOKINGS.some(([ci2,co2,f2]) => co2 === ci && f2 === floor);
+    if(!map[co]) map[co] = [];
+    map[co].push({floor,name,cleaner,plat,extra,turnover,checkin:ci,checkout:co,nights});
+  }
+  for(const k in map) map[k].sort((a,b) => FLOOR_ORDER[a.floor] - FLOOR_ORDER[b.floor]);
+  return map;
+}
+function passesFilter(e){
+  if(currentFilter === "all") return true;
+  if(currentFilter === "turnover") return e.turnover;
+  return e.cleaner === currentFilter;
+}
+function renderCalendar(){
+  const map = getCheckouts(currentMonth);
+  const cal = document.getElementById("calendar");
+  cal.innerHTML = "";
+  const first = new Date(2026, currentMonth-1, 1);
+  const daysInMonth = new Date(2026, currentMonth, 0).getDate();
+  const startDow = first.getDay();
+  const todayKey = fmtKey(new Date());
+  const prevMonthDays = new Date(2026, currentMonth-1, 0).getDate();
+  for(let i = startDow - 1; i >= 0; i--){
+    const dnum = prevMonthDays - i;
+    const cell = document.createElement("div");
+    cell.className = "cell not-in-month";
+    cell.innerHTML = `<div class="date-num faint">${dnum}</div>`;
+    cal.appendChild(cell);
+  }
+  for(let day = 1; day <= daysInMonth; day++){
+    const d = new Date(2026, currentMonth-1, day);
+    const dow = d.getDay();
+    const key = fmtKey(d);
+    const events = (map[key] || []).filter(passesFilter);
+    const cell = document.createElement("div");
+    cell.className = "cell" + (key === todayKey ? " today" : "");
+    cell.dataset.key = key;
+    const dateClass = dow === 0 ? "sun" : dow === 6 ? "sat" : "";
+    let html = `<div class="date-num ${dateClass}">${day}</div>`;
+    const maxShow = 3;
+    for(let i = 0; i < Math.min(events.length, maxShow); i++){
+      const e = events[i];
+      const cls = e.cleaner === "H" ? "mom" : `p-${e.floor}`;
+      const tn = e.turnover ? " turnover" : "";
+      const label = e.cleaner === "H" ? `${e.floor}·엄마` : e.floor;
+      html += `<div class="evt-pill ${cls}${tn}">${label}</div>`;
+    }
+    if(events.length > maxShow){
+      html += `<div class="evt-more">+${events.length - maxShow}건</div>`;
+    }
+    cell.innerHTML = html;
+    cell.addEventListener("click", () => openModal(d, map[key] || []));
+    cal.appendChild(cell);
+  }
+  const totalCells = startDow + daysInMonth;
+  const trail = (7 - (totalCells % 7)) % 7;
+  for(let i = 1; i <= trail; i++){
+    const cell = document.createElement("div");
+    cell.className = "cell not-in-month";
+    cell.innerHTML = `<div class="date-num faint">${i}</div>`;
+    cal.appendChild(cell);
+  }
+}
+function renderSummary(){
+  const map = getCheckouts(currentMonth);
+  let total = 0, moono = 0, mom = 0, turns = 0;
+  let mGross = 0, hGross = 0;
+  for(const evs of Object.values(map)){
+    for(const e of evs){
+      total++;
+      if(e.cleaner === "M"){ moono++; mGross += RATES[e.floor]; }
+      else { mom++; hGross += RATES[e.floor]; }
+      if(e.turnover) turns++;
+    }
+  }
+  const tax = Math.round(mGross * 0.033);
+  const net = mGross - tax;
+  document.getElementById("summary").innerHTML = `
+    <div class="pill"><div class="n">${total}</div><div class="l">전체</div></div>
+    <div class="pill moono"><div class="n">${moono}</div><div class="l">Moono</div></div>
+    <div class="pill mom"><div class="n">${mom}</div><div class="l">엄마</div></div>
+    <div class="pill turn"><div class="n">${turns}</div><div class="l">같은날</div></div>
+  `;
+  document.getElementById("moneySummary").innerHTML = `
+    <h3>💰 ${currentMonth}월 예상 청소비</h3>
+    <div class="money-row"><span>Moono 총 (${moono}건)</span><span class="amount">₩${mGross.toLocaleString()}</span></div>
+    <div class="money-row"><span>원천세 3.3%</span><span class="amount" style="color:var(--orange)">−₩${tax.toLocaleString()}</span></div>
+    <div class="money-row net"><span>Moono 실지급</span><span class="amount">₩${net.toLocaleString()}</span></div>
+    <div class="money-row"><span style="color:var(--mom-fg)">엄마 참고 (${mom}건)</span><span class="amount" style="color:var(--mom-fg)">₩${hGross.toLocaleString()}</span></div>
+    <div class="money-row total"><span>월 청소비 총액</span><span class="amount">₩${(net + hGross).toLocaleString()}</span></div>
+  `;
+}
+function openModal(d, allEvents){
+  const dayName = DAY_NAMES[d.getDay()];
+  document.getElementById("modalDate").innerHTML = 
+    `${d.getMonth()+1}월 ${d.getDate()}일 <span class="day">${dayName}요일</span>`;
+  const body = document.getElementById("modalBody");
+  if(allEvents.length === 0){
+    body.innerHTML = '<div class="modal-empty">이 날은 청소 일정이 없어요</div>';
+  } else {
+    body.innerHTML = allEvents.map(e => {
+      const isMom = e.cleaner === "H";
+      const clsCard = "detail-card" + (e.turnover ? " turnover" : "") + (isMom ? " mom detail-mom" : "");
+      const cleanerLbl = isMom ? "엄마" : "Moono";
+      const cleanerCls = isMom ? "detail-cleaner-tag mom" : "detail-cleaner-tag";
+      const rate = RATES[e.floor];
+      const checkinD = parseDate(e.checkin);
+      const checkoutD = parseDate(e.checkout);
+      const ciStr = `${checkinD.getMonth()+1}월 ${checkinD.getDate()}일 (${DAY_NAMES[checkinD.getDay()]})`;
+      const coStr = `${checkoutD.getMonth()+1}월 ${checkoutD.getDate()}일 (${DAY_NAMES[checkoutD.getDay()]})`;
+      return `
+        <div class="${clsCard}">
+          <div class="detail-top">
+            <div class="detail-floor f-${e.floor}">${e.floor}</div>
+            <div class="detail-name">${e.name}</div>
+            <div class="${cleanerCls}">${cleanerLbl}</div>
+          </div>
+          <dl class="detail-info">
+            <dt>플랫폼</dt><dd>${e.plat}</dd>
+            <dt>체크인</dt><dd>${ciStr}</dd>
+            <dt>체크아웃</dt><dd>${coStr} <span style="color:var(--ink-soft)">· ${e.nights}박</span></dd>
+            ${e.extra ? `<dt>인원</dt><dd>${e.extra}</dd>` : ''}
+            <dt>청소비</dt><dd>₩${rate.toLocaleString()}${!isMom ? ` (세후 ₩${(rate - Math.round(rate*0.033)).toLocaleString()})` : ''}</dd>
+          </dl>
+          ${e.turnover ? '<div class="turnover-banner">⚡ 같은날 턴오버 · 오전 청소 필수</div>' : ''}
+        </div>
+      `;
+    }).join("");
+  }
+  document.getElementById("modal").classList.add("open");
+  document.getElementById("modalBackdrop").classList.add("open");
+}
+function closeModal(){
+  document.getElementById("modal").classList.remove("open");
+  document.getElementById("modalBackdrop").classList.remove("open");
+}
+document.getElementById("modalBackdrop").addEventListener("click", closeModal);
+let touchStartY = 0;
+const modal = document.getElementById("modal");
+modal.addEventListener("touchstart", e => touchStartY = e.touches[0].clientY);
+modal.addEventListener("touchend", e => {
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if(dy > 80) closeModal();
+});
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    currentMonth = parseInt(tab.dataset.month);
+    renderCalendar();
+    renderSummary();
+  });
+});
+document.querySelectorAll(".chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+    chip.classList.add("active");
+    currentFilter = chip.dataset.filter;
+    renderCalendar();
+  });
+});
+const now = new Date();
+if(now.getFullYear() === 2026 && [8,9,10].includes(now.getMonth()+1)){
+  currentMonth = now.getMonth()+1;
+  document.querySelectorAll(".tab").forEach(t => {
+    t.classList.toggle("active", parseInt(t.dataset.month) === currentMonth);
+  });
+}
+renderCalendar();
+renderSummary();
+</script>
+</body>
+</html>
