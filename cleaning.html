@@ -24,9 +24,12 @@
   --green: #28694b;
   --mom-bg: #e6e6e6;
   --mom-fg: #646464;
+  --orange-bg: #fff0d9;
+  --orange-fg: #a04010;
   --f1-bg: #ffeadd; --f1-fg: #8c4614;
   --f2-bg: #e3f2e8; --f2-fg: #285f3c;
   --f3-bg: #e8ebf8; --f3-fg: #324691;
+  --f4-bg: #ffdcb9; --f4-fg: #7f3010;
   --f5-bg: #fbe8f0; --f5-fg: #9b325f;
   --f6-bg: #fdf4d7; --f6-fg: #875f19;
 }
@@ -43,19 +46,20 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 .filter-bar::-webkit-scrollbar { display: none; }
 .chip { padding: 6px 12px; border: 1px solid var(--line); border-radius: 20px; background: var(--card); font-size: 12px; white-space: nowrap; cursor: pointer; color: var(--ink-soft); }
 .chip.active { background: var(--ink); color: white; border-color: var(--ink); }
-.summary-strip { display: flex; gap: 6px; padding: 4px 16px 12px; }
-.pill { flex: 1; text-align: center; padding: 6px 4px; background: var(--card); border: 1px solid var(--line-soft); border-radius: 8px; }
+.summary-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; padding: 4px 16px 12px; }
+.pill { text-align: center; padding: 6px 4px; background: var(--card); border: 1px solid var(--line-soft); border-radius: 8px; }
 .pill .n { font-size: 15px; font-weight: 700; }
 .pill .l { font-size: 10px; color: var(--ink-soft); }
 .pill.moono .n { color: var(--green); }
 .pill.mom .n { color: var(--mom-fg); }
+.pill.orange-c .n { color: var(--orange-fg); }
 .pill.turn .n { color: var(--orange); }
 .cal-wrap { padding: 0 12px; }
 .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; padding: 8px 0 6px; font-size: 11px; color: var(--ink-soft); font-weight: 500; }
 .cal-weekdays .sun { color: var(--sun); }
 .cal-weekdays .sat { color: var(--sat); }
 .cal { display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid var(--line-soft); border-left: 1px solid var(--line-soft); background: var(--line-soft); gap: 1px; border-radius: 8px; overflow: hidden; }
-.cell { background: var(--card); min-height: 78px; padding: 4px 3px; cursor: pointer; position: relative; transition: background 0.1s; display: flex; flex-direction: column; gap: 2px; }
+.cell { background: var(--card); min-height: 90px; padding: 4px 3px; cursor: pointer; position: relative; transition: background 0.1s; display: flex; flex-direction: column; gap: 2px; }
 .cell:active { background: #f5f2ea; }
 .cell.not-in-month { background: #f7f5ef; }
 .cell.today { background: linear-gradient(180deg, #fff9e6 0%, #fff 40%); }
@@ -68,9 +72,11 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 .evt-pill.p-1F { background: var(--f1-bg); color: var(--f1-fg); }
 .evt-pill.p-2F { background: var(--f2-bg); color: var(--f2-fg); }
 .evt-pill.p-3F { background: var(--f3-bg); color: var(--f3-fg); }
+.evt-pill.p-4F { background: var(--f4-bg); color: var(--f4-fg); }
 .evt-pill.p-5F { background: var(--f5-bg); color: var(--f5-fg); }
 .evt-pill.p-6F { background: var(--f6-bg); color: var(--f6-fg); }
 .evt-pill.mom { background: var(--mom-bg); color: var(--mom-fg); }
+.evt-pill.orange-c { background: var(--orange-bg); color: var(--orange-fg); border: 1px solid var(--orange-fg); }
 .evt-pill.turnover::before { content: "●"; color: var(--orange); font-size: 8px; }
 .evt-more { font-size: 9px; color: var(--ink-soft); padding: 1px 4px; }
 .money-summary { margin: 16px 16px 0; padding: 14px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
@@ -79,6 +85,19 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 .money-row.total { border-top: 1px solid var(--line); margin-top: 5px; padding-top: 10px; font-weight: 700; font-size: 15px; }
 .money-row .amount { font-variant-numeric: tabular-nums; }
 .money-row.net .amount { color: var(--green); font-weight: 700; }
+
+/* KakaoTalk export section */
+.kakao-section { margin: 20px 16px 0; padding: 14px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+.kakao-section h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.kakao-section .kakao-sub { font-size: 11px; color: var(--ink-soft); margin-bottom: 12px; }
+.cleaner-tabs { display: flex; gap: 6px; margin-bottom: 12px; }
+.cleaner-tab { flex: 1; padding: 8px 4px; text-align: center; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); font-size: 12px; font-weight: 500; color: var(--ink-soft); cursor: pointer; }
+.cleaner-tab.active { background: #fee500; color: #191600; border-color: #fee500; font-weight: 700; }
+.msg-box { background: #f9f6ec; border: 1px dashed var(--line); border-radius: 10px; padding: 12px; font-size: 12px; white-space: pre-wrap; line-height: 1.7; font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; max-height: 400px; overflow-y: auto; }
+.copy-btn { display: block; width: 100%; margin-top: 10px; padding: 12px; background: #fee500; color: #191600; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; }
+.copy-btn:active { background: #f5dc00; }
+.copy-btn.copied { background: var(--green); color: white; }
+
 .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
 .modal-backdrop.open { opacity: 1; pointer-events: auto; }
 .modal { position: fixed; left: 0; right: 0; bottom: 0; background: var(--bg); border-radius: 16px 16px 0 0; z-index: 201; transform: translateY(100%); transition: transform 0.25s; max-height: 85vh; overflow-y: auto; }
@@ -92,24 +111,27 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 .detail-card { border: 1px solid var(--line); border-radius: 10px; padding: 12px; background: var(--card); }
 .detail-card.turnover { border-color: var(--orange); border-width: 2px; }
 .detail-card.mom { background: var(--mom-bg); border-color: #ccc; }
+.detail-card.orange-c { background: var(--orange-bg); border-color: var(--orange-fg); }
 .detail-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .detail-floor { font-size: 15px; font-weight: 700; padding: 4px 10px; border-radius: 6px; }
 .detail-floor.f-1F { background: var(--f1-bg); color: var(--f1-fg); }
 .detail-floor.f-2F { background: var(--f2-bg); color: var(--f2-fg); }
 .detail-floor.f-3F { background: var(--f3-bg); color: var(--f3-fg); }
+.detail-floor.f-4F { background: var(--f4-bg); color: var(--f4-fg); }
 .detail-floor.f-5F { background: var(--f5-bg); color: var(--f5-fg); }
 .detail-floor.f-6F { background: var(--f6-bg); color: var(--f6-fg); }
 .detail-name { font-size: 16px; font-weight: 600; flex: 1; }
 .detail-mom .detail-name { color: var(--mom-fg); }
 .detail-cleaner-tag { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; background: var(--green); color: white; }
 .detail-cleaner-tag.mom { background: var(--mom-fg); }
+.detail-cleaner-tag.orange-c { background: var(--orange-fg); }
 .detail-info { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; font-size: 13px; padding-top: 8px; border-top: 1px dashed var(--line); }
 .detail-info dt { color: var(--ink-soft); }
 .detail-info dd { color: var(--ink); font-weight: 500; }
 .turnover-banner { margin-top: 8px; padding: 6px 10px; background: rgba(220, 100, 32, 0.1); color: var(--orange); font-size: 12px; font-weight: 600; border-radius: 6px; text-align: center; }
 @media (min-width: 700px) {
   body { max-width: 700px; margin: 0 auto; }
-  .cell { min-height: 100px; }
+  .cell { min-height: 110px; }
   .modal { max-width: 700px; margin: 0 auto; border-radius: 16px; bottom: 20px; left: 20px; right: 20px; }
 }
 </style>
@@ -117,7 +139,7 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 <body>
 <header>
   <div class="title">🧹 파키라 청소 캘린더</div>
-  <div class="subtitle">Pachira House · Stay Pachira · 2026</div>
+  <div class="subtitle">Pachira House · Stay Pachira · 하우스오렌지 · 2026</div>
   <div class="tabs">
     <div class="tab" data-month="8">8월</div>
     <div class="tab active" data-month="9">9월</div>
@@ -128,6 +150,7 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
   <div class="chip active" data-filter="all">전체</div>
   <div class="chip" data-filter="M">Moono</div>
   <div class="chip" data-filter="H">엄마</div>
+  <div class="chip" data-filter="O">하우스오렌지</div>
   <div class="chip" data-filter="turnover">같은날 턴오버</div>
 </div>
 <div class="summary-strip" id="summary"></div>
@@ -138,6 +161,30 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
   <div class="cal" id="calendar"></div>
 </div>
 <div class="money-summary" id="moneySummary"></div>
+
+<div class="kakao-section">
+  <h3>💬 카톡용 청소 일정 (담당자별)</h3>
+  <div class="kakao-sub">담당자 선택 후 복사 → 카톡 붙여넣기</div>
+  <div class="cleaner-tabs">
+    <div class="cleaner-tab active" data-cleaner="M">Moono</div>
+    <div class="cleaner-tab" data-cleaner="H">엄마</div>
+    <div class="cleaner-tab" data-cleaner="O">최주희 (하우스오렌지)</div>
+  </div>
+  <div class="msg-box" id="msgBox"></div>
+  <button class="copy-btn" id="copyBtn">📋 카톡용 메시지 복사하기</button>
+</div>
+
+<div class="kakao-section" style="border-color: #b8a56b;">
+  <h3>🧾 세무사 인건비 신고자료 (담당자별)</h3>
+  <div class="kakao-sub">지급자: (주)스테이파키라 · 3.3% 원천징수 후 이체 완료</div>
+  <div class="cleaner-tabs">
+    <div class="cleaner-tab active" data-tax-cleaner="M">Moono (NYAMBE MOONO)</div>
+    <div class="cleaner-tab" data-tax-cleaner="O">최주희 (하우스오렌지)</div>
+  </div>
+  <div class="msg-box" id="taxBox"></div>
+  <button class="copy-btn" id="copyTaxBtn" style="background:#b8a56b; color:white;">📋 세무사 신고자료 복사하기</button>
+</div>
+
 <div class="modal-backdrop" id="modalBackdrop"></div>
 <div class="modal" id="modal">
   <div class="modal-header">
@@ -165,6 +212,14 @@ const BOOKINGS = [
 ["2026-08-22","2026-08-23","3F","…8228","M","Airbnb",null],
 ["2026-08-23","2026-08-24","3F","…7104","H","Airbnb",null],
 ["2026-08-25","2026-08-30","3F","Vincenza","H","Booking",null],
+["2026-07-31","2026-08-01","4F","1박","O","?","1박"],
+["2026-08-01","2026-08-07","4F","6박 예약","O","?","6박 · 3명"],
+["2026-08-07","2026-08-09","4F","2박 예약","O","?","2박 · 4명"],
+["2026-08-09","2026-08-10","4F","1박 예약","O","?","1박 · 4명"],
+["2026-08-10","2026-08-18","4F","8박 예약","O","?","8박 · 4명"],
+["2026-08-20","2026-08-24","4F","4박 예약","O","?","4박 · 2명"],
+["2026-08-24","2026-08-27","4F","3박 예약","O","?","3박 · 4명"],
+["2026-08-28","2026-08-31","4F","3박 예약","O","?","3박 · 4명"],
 ["2026-07-30","2026-08-06","5F","…3515","H","Airbnb",null],
 ["2026-08-07","2026-08-08","5F","…8332","H","Airbnb",null],
 ["2026-08-08","2026-08-09","5F","…3986","H","Airbnb",null],
@@ -228,14 +283,20 @@ const BOOKINGS = [
 ["2026-10-19","2026-10-23","6F","…1380 (5F+6F)","M","Airbnb","독채"],
 ["2026-09-28","2026-10-10","2F","Marcelo","H","Vrbo",null],
 ];
-const RATES = {"1F":40000,"2F":40000,"3F":50000,"5F":55000,"6F":50000};
-const FLOOR_ORDER = {"1F":1,"2F":2,"3F":3,"5F":5,"6F":6};
+const RATES = {"1F":40000,"2F":40000,"3F":50000,"4F":45000,"5F":55000,"6F":50000};
+const FLOOR_ORDER = {"1F":1,"2F":2,"3F":3,"4F":4,"5F":5,"6F":6};
 const DAY_NAMES = ["일","월","화","수","목","금","토"];
+const CLEANER_NAMES = {"M":"Moono","H":"엄마","O":"하우스오렌지"};
+const CLEANER_TAX_NAMES = {"M":"NYAMBE MOONO","O":"최주희"};
 let currentMonth = 9;
 let currentFilter = "all";
+let currentCleaner = "M";
+let currentTaxCleaner = "M";
+
 function parseDate(s){const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d);}
 function fmtKey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 function daysBetween(a,b){return Math.round((b-a)/(24*60*60*1000));}
+
 function getCheckouts(month){
   const map = {};
   for(const b of BOOKINGS){
@@ -250,11 +311,17 @@ function getCheckouts(month){
   for(const k in map) map[k].sort((a,b) => FLOOR_ORDER[a.floor] - FLOOR_ORDER[b.floor]);
   return map;
 }
+
 function passesFilter(e){
   if(currentFilter === "all") return true;
   if(currentFilter === "turnover") return e.turnover;
   return e.cleaner === currentFilter;
 }
+
+function cleanerCls(c){
+  return c === "H" ? "mom" : c === "O" ? "orange-c" : "";
+}
+
 function renderCalendar(){
   const map = getCheckouts(currentMonth);
   const cal = document.getElementById("calendar");
@@ -284,9 +351,11 @@ function renderCalendar(){
     const maxShow = 3;
     for(let i = 0; i < Math.min(events.length, maxShow); i++){
       const e = events[i];
-      const cls = e.cleaner === "H" ? "mom" : `p-${e.floor}`;
+      let cls = e.cleaner === "H" ? "mom" : e.cleaner === "O" ? "orange-c" : `p-${e.floor}`;
       const tn = e.turnover ? " turnover" : "";
-      const label = e.cleaner === "H" ? `${e.floor}·엄마` : e.floor;
+      let label = e.floor;
+      if(e.cleaner === "H") label = `${e.floor}·엄마`;
+      else if(e.cleaner === "O") label = `${e.floor}·오렌지`;
       html += `<div class="evt-pill ${cls}${tn}">${label}</div>`;
     }
     if(events.length > maxShow){
@@ -305,15 +374,17 @@ function renderCalendar(){
     cal.appendChild(cell);
   }
 }
+
 function renderSummary(){
   const map = getCheckouts(currentMonth);
-  let total = 0, moono = 0, mom = 0, turns = 0;
-  let mGross = 0, hGross = 0;
+  let total = 0, moono = 0, mom = 0, orange = 0, turns = 0;
+  let mGross = 0, hGross = 0, oGross = 0;
   for(const evs of Object.values(map)){
     for(const e of evs){
       total++;
       if(e.cleaner === "M"){ moono++; mGross += RATES[e.floor]; }
-      else { mom++; hGross += RATES[e.floor]; }
+      else if(e.cleaner === "H"){ mom++; hGross += RATES[e.floor]; }
+      else { orange++; oGross += RATES[e.floor]; }
       if(e.turnover) turns++;
     }
   }
@@ -323,6 +394,7 @@ function renderSummary(){
     <div class="pill"><div class="n">${total}</div><div class="l">전체</div></div>
     <div class="pill moono"><div class="n">${moono}</div><div class="l">Moono</div></div>
     <div class="pill mom"><div class="n">${mom}</div><div class="l">엄마</div></div>
+    <div class="pill orange-c"><div class="n">${orange}</div><div class="l">오렌지</div></div>
     <div class="pill turn"><div class="n">${turns}</div><div class="l">같은날</div></div>
   `;
   document.getElementById("moneySummary").innerHTML = `
@@ -331,9 +403,126 @@ function renderSummary(){
     <div class="money-row"><span>원천세 3.3%</span><span class="amount" style="color:var(--orange)">−₩${tax.toLocaleString()}</span></div>
     <div class="money-row net"><span>Moono 실지급</span><span class="amount">₩${net.toLocaleString()}</span></div>
     <div class="money-row"><span style="color:var(--mom-fg)">엄마 참고 (${mom}건)</span><span class="amount" style="color:var(--mom-fg)">₩${hGross.toLocaleString()}</span></div>
-    <div class="money-row total"><span>월 청소비 총액</span><span class="amount">₩${(net + hGross).toLocaleString()}</span></div>
+    <div class="money-row total"><span>파키라 청소비 총액</span><span class="amount">₩${(net + hGross).toLocaleString()}</span></div>
+    <div class="money-row" style="margin-top:8px; padding-top:10px; border-top:1px dashed var(--line);"><span style="color:var(--orange-fg)">하우스오렌지 (${orange}건, 별도 관리)</span><span class="amount" style="color:var(--orange-fg)">참고 ₩${oGross.toLocaleString()}</span></div>
   `;
 }
+
+function renderKakaoMessage(){
+  const map = getCheckouts(currentMonth);
+  const dates = Object.keys(map).sort();
+  const cleanerName = CLEANER_NAMES[currentCleaner];
+  const emoji = currentCleaner === "M" ? "🧹" : currentCleaner === "H" ? "🏠" : "🍊";
+
+  let lines = [];
+  lines.push(`${emoji} ${cleanerName}님 ${currentMonth}월 청소 일정`);
+  lines.push(`━━━━━━━━━━━━━━━`);
+  lines.push(``);
+
+  let count = 0;
+  let totalGross = 0;
+
+  for(const dateStr of dates){
+    const events = map[dateStr].filter(e => e.cleaner === currentCleaner);
+    if(events.length === 0) continue;
+    const d = parseDate(dateStr);
+    const dayName = DAY_NAMES[d.getDay()];
+    lines.push(`📅 ${d.getMonth()+1}/${d.getDate()} (${dayName})`);
+    for(const e of events){
+      count++;
+      totalGross += RATES[e.floor];
+      let line = `  · ${e.floor} ${e.name}`;
+      if(e.extra) line += ` (${e.extra})`;
+      if(e.turnover) line += ` ⚡같은날 턴오버`;
+      lines.push(line);
+    }
+    lines.push(``);
+  }
+
+  lines.push(`━━━━━━━━━━━━━━━`);
+  lines.push(`총 ${count}건`);
+  if(currentCleaner === "M"){
+    const tax = Math.round(totalGross * 0.033);
+    lines.push(`청소비 ₩${totalGross.toLocaleString()}`);
+    lines.push(`(원천세 3.3% 제외 → 실지급 ₩${(totalGross - tax).toLocaleString()})`);
+  } else if(currentCleaner === "H"){
+    lines.push(`(엄마 청소분 · 참고 ₩${totalGross.toLocaleString()})`);
+  } else {
+    lines.push(`(하우스오렌지 청소 담당 · 별도 관리)`);
+  }
+
+  if(count === 0){
+    lines = [`${emoji} ${cleanerName}님 ${currentMonth}월 청소 일정`, `━━━━━━━━━━━━━━━`, ``, `이번 달 청소 일정이 없어요.`];
+  }
+
+  document.getElementById("msgBox").textContent = lines.join("\n");
+}
+
+function renderTaxReport(){
+  const map = getCheckouts(currentMonth);
+  const dates = Object.keys(map).sort();
+  const cleanerName = CLEANER_NAMES[currentTaxCleaner];
+  const taxName = CLEANER_TAX_NAMES[currentTaxCleaner];
+  const jobDesc = currentTaxCleaner === "O" ? "하우스오렌지 4F 청소" : "파키라 청소";
+
+  let lines = [];
+  lines.push(`═══════════════════════════════════════`);
+  lines.push(`2026년 ${currentMonth}월 인건비 지급 내역`);
+  lines.push(`═══════════════════════════════════════`);
+  lines.push(``);
+  lines.push(`【지급자】`);
+  lines.push(`  상호: (주)스테이파키라`);
+  lines.push(``);
+  lines.push(`【소득자】`);
+  lines.push(`  성명: ${taxName}`);
+  lines.push(`  소득 구분: 사업소득 (3.3% 원천징수)`);
+  lines.push(`  담당 업무: ${jobDesc}`);
+  lines.push(``);
+  lines.push(`【건별 지급 내역】`);
+  lines.push(`─────────────────────────────────────────`);
+  lines.push(`지급일       소득액    원천세   실지급    비고`);
+  lines.push(`─────────────────────────────────────────`);
+
+  let count = 0;
+  let totalGross = 0, totalTax = 0, totalNet = 0;
+
+  for(const dateStr of dates){
+    const events = map[dateStr].filter(e => e.cleaner === currentTaxCleaner);
+    for(const e of events){
+      count++;
+      const rate = RATES[e.floor];
+      const tax = Math.round(rate * 0.033);
+      const net = rate - tax;
+      totalGross += rate; totalTax += tax; totalNet += net;
+      const d = parseDate(dateStr);
+      const dStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+      const flag = e.turnover ? " (턴오버)" : "";
+      const memo = `${e.floor} ${e.name}${flag}`;
+      lines.push(`${dStr}  ${rate.toLocaleString().padStart(7)}  ${tax.toLocaleString().padStart(6)}  ${net.toLocaleString().padStart(7)}  ${memo}`);
+    }
+  }
+  lines.push(`─────────────────────────────────────────`);
+  lines.push(``);
+  lines.push(`【합계】`);
+  lines.push(`  청소 건수: ${count}건`);
+  lines.push(`  총 지급총액: ₩${totalGross.toLocaleString()}`);
+  lines.push(`  소득세(3%): ₩${Math.round(totalGross * 0.03).toLocaleString()}`);
+  lines.push(`  지방소득세(0.3%): ₩${Math.round(totalGross * 0.003).toLocaleString()}`);
+  lines.push(`  원천세 합계(3.3%): ₩${totalTax.toLocaleString()}`);
+  lines.push(`  실지급 합계: ₩${totalNet.toLocaleString()}`);
+  lines.push(``);
+  lines.push(`【지급 완료 확인】`);
+  lines.push(`  ✅ 3.3% 원천징수 후 실지급액 이체 완료`);
+  lines.push(``);
+  lines.push(`═══════════════════════════════════════`);
+
+  if(count === 0){
+    lines = [`═══════════════════════════════════════`, `2026년 ${currentMonth}월 · ${taxName} 인건비`, `═══════════════════════════════════════`, ``, `이번 달 지급 내역이 없습니다.`];
+  }
+
+  document.getElementById("taxBox").textContent = lines.join("\n");
+}
+
 function openModal(d, allEvents){
   const dayName = DAY_NAMES[d.getDay()];
   document.getElementById("modalDate").innerHTML = 
@@ -344,27 +533,36 @@ function openModal(d, allEvents){
   } else {
     body.innerHTML = allEvents.map(e => {
       const isMom = e.cleaner === "H";
-      const clsCard = "detail-card" + (e.turnover ? " turnover" : "") + (isMom ? " mom detail-mom" : "");
-      const cleanerLbl = isMom ? "엄마" : "Moono";
-      const cleanerCls = isMom ? "detail-cleaner-tag mom" : "detail-cleaner-tag";
+      const isOrange = e.cleaner === "O";
+      let clsCard = "detail-card";
+      if(e.turnover) clsCard += " turnover";
+      if(isMom) clsCard += " mom detail-mom";
+      if(isOrange) clsCard += " orange-c";
+      const cleanerLbl = CLEANER_NAMES[e.cleaner];
+      let cleanerTagCls = "detail-cleaner-tag";
+      if(isMom) cleanerTagCls += " mom";
+      if(isOrange) cleanerTagCls += " orange-c";
       const rate = RATES[e.floor];
       const checkinD = parseDate(e.checkin);
       const checkoutD = parseDate(e.checkout);
       const ciStr = `${checkinD.getMonth()+1}월 ${checkinD.getDate()}일 (${DAY_NAMES[checkinD.getDay()]})`;
       const coStr = `${checkoutD.getMonth()+1}월 ${checkoutD.getDate()}일 (${DAY_NAMES[checkoutD.getDay()]})`;
+      const rateStr = isOrange 
+        ? `₩${rate.toLocaleString()} (별도 관리)` 
+        : `₩${rate.toLocaleString()}${!isMom ? ` (세후 ₩${(rate - Math.round(rate*0.033)).toLocaleString()})` : ''}`;
       return `
         <div class="${clsCard}">
           <div class="detail-top">
             <div class="detail-floor f-${e.floor}">${e.floor}</div>
             <div class="detail-name">${e.name}</div>
-            <div class="${cleanerCls}">${cleanerLbl}</div>
+            <div class="${cleanerTagCls}">${cleanerLbl}</div>
           </div>
           <dl class="detail-info">
             <dt>플랫폼</dt><dd>${e.plat}</dd>
             <dt>체크인</dt><dd>${ciStr}</dd>
             <dt>체크아웃</dt><dd>${coStr} <span style="color:var(--ink-soft)">· ${e.nights}박</span></dd>
             ${e.extra ? `<dt>인원</dt><dd>${e.extra}</dd>` : ''}
-            <dt>청소비</dt><dd>₩${rate.toLocaleString()}${!isMom ? ` (세후 ₩${(rate - Math.round(rate*0.033)).toLocaleString()})` : ''}</dd>
+            <dt>청소비</dt><dd>${rateStr}</dd>
           </dl>
           ${e.turnover ? '<div class="turnover-banner">⚡ 같은날 턴오버 · 오전 청소 필수</div>' : ''}
         </div>
@@ -374,6 +572,7 @@ function openModal(d, allEvents){
   document.getElementById("modal").classList.add("open");
   document.getElementById("modalBackdrop").classList.add("open");
 }
+
 function closeModal(){
   document.getElementById("modal").classList.remove("open");
   document.getElementById("modalBackdrop").classList.remove("open");
@@ -386,6 +585,7 @@ modal.addEventListener("touchend", e => {
   const dy = e.changedTouches[0].clientY - touchStartY;
   if(dy > 80) closeModal();
 });
+
 document.querySelectorAll(".tab").forEach(tab => {
   tab.addEventListener("click", () => {
     document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
@@ -393,8 +593,11 @@ document.querySelectorAll(".tab").forEach(tab => {
     currentMonth = parseInt(tab.dataset.month);
     renderCalendar();
     renderSummary();
+    renderKakaoMessage();
+    renderTaxReport();
   });
 });
+
 document.querySelectorAll(".chip").forEach(chip => {
   chip.addEventListener("click", () => {
     document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
@@ -403,6 +606,54 @@ document.querySelectorAll(".chip").forEach(chip => {
     renderCalendar();
   });
 });
+
+document.querySelectorAll("[data-cleaner]").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll("[data-cleaner]").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    currentCleaner = tab.dataset.cleaner;
+    renderKakaoMessage();
+  });
+});
+
+document.querySelectorAll("[data-tax-cleaner]").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll("[data-tax-cleaner]").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    currentTaxCleaner = tab.dataset.taxCleaner;
+    renderTaxReport();
+  });
+});
+
+async function copyToClipboard(text, btn, successMsg){
+  try {
+    await navigator.clipboard.writeText(text);
+    const orig = btn.textContent;
+    btn.textContent = successMsg;
+    btn.classList.add("copied");
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.classList.remove("copied");
+    }, 2000);
+  } catch(err) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    alert("복사 완료!");
+  }
+}
+
+document.getElementById("copyBtn").addEventListener("click", () => {
+  copyToClipboard(document.getElementById("msgBox").textContent, document.getElementById("copyBtn"), "✅ 복사됐어요! 카톡에 붙여넣으세요");
+});
+
+document.getElementById("copyTaxBtn").addEventListener("click", () => {
+  copyToClipboard(document.getElementById("taxBox").textContent, document.getElementById("copyTaxBtn"), "✅ 복사됐어요! 세무사에게 전달하세요");
+});
+
 const now = new Date();
 if(now.getFullYear() === 2026 && [8,9,10].includes(now.getMonth()+1)){
   currentMonth = now.getMonth()+1;
@@ -410,8 +661,11 @@ if(now.getFullYear() === 2026 && [8,9,10].includes(now.getMonth()+1)){
     t.classList.toggle("active", parseInt(t.dataset.month) === currentMonth);
   });
 }
+
 renderCalendar();
 renderSummary();
+renderKakaoMessage();
+renderTaxReport();
 </script>
 </body>
 </html>
