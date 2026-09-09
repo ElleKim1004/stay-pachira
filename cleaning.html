@@ -76,6 +76,7 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 .evt-pill.p-5F { background: var(--f5-bg); color: var(--f5-fg); }
 .evt-pill.p-6F { background: var(--f6-bg); color: var(--f6-fg); }
 .evt-pill.mom { background: var(--mom-bg); color: var(--mom-fg); }
+.evt-pill.moono-pill { font-weight: 700; box-shadow: inset 0 0 0 1.5px rgba(40,105,75,0.4); }
 .evt-pill.orange-c { background: var(--orange-bg); color: var(--orange-fg); border: 1px solid var(--orange-fg); }
 .evt-pill.turnover::before { content: "●"; color: var(--orange); font-size: 8px; }
 .evt-more { font-size: 9px; color: var(--ink-soft); padding: 1px 4px; }
@@ -185,6 +186,31 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
   <button class="copy-btn" id="copyTaxBtn" style="background:#b8a56b; color:white;">📋 세무사 신고자료 복사하기</button>
 </div>
 
+<div class="kakao-section" style="border-color: #ff6b35;">
+  <h3>🏨 야놀자 실시간 캘린더 (스테이파키라 5F/6F)</h3>
+  <div class="kakao-sub">교차 확인용 · 새 예약 들어오면 앱에 수동 반영 필요</div>
+  <details style="margin-top:10px;">
+    <summary style="cursor:pointer; padding:10px; background:#fff5f0; border-radius:8px; font-weight:600; color:#ff6b35;">🔽 야놀자 캘린더 펼쳐보기</summary>
+    <div style="margin-top:10px;">
+      <iframe src="https://rev.yapen.co.kr/external?ypIdx=80597" 
+              style="width:100%; height:600px; border:1px solid var(--line); border-radius:8px; background:white;"
+              loading="lazy"
+              title="야놀자 스테이파키라 캘린더">
+      </iframe>
+    </div>
+  </details>
+  <a href="https://rev.yapen.co.kr/external?ypIdx=80597" target="_blank" rel="noopener"
+     style="display:block; margin-top:10px; padding:12px; background:#ff6b35; color:white; text-align:center; text-decoration:none; border-radius:8px; font-weight:700;">
+     🔗 야놀자 캘린더 새 창에서 열기
+  </a>
+  <div style="margin-top:12px; padding:10px; background:#fff5f0; border-radius:8px; font-size:11px; color:#8b4513; line-height:1.5;">
+    💡 <b>사용 팁</b><br>
+    · <b>완</b> = 예약 확정 / <b>가</b> = 예약 가능 / <b>대</b> = 입금 대기<br>
+    · 하우스오렌지 4F는 야놀자 등록 안 됨<br>
+    · 새 야놀자 예약 뜨면 "9/25 6F 홍*동 야놀자 2박" 이런 식으로 알려주시면 앱에 반영해드립니다
+  </div>
+</div>
+
 <div class="modal-backdrop" id="modalBackdrop"></div>
 <div class="modal" id="modal">
   <div class="modal-header">
@@ -249,9 +275,9 @@ const BOOKINGS = [
 ["2026-08-27","2026-08-28","6F","박*빈","M","Yanolja",null],
 ["2026-08-28","2026-08-30","6F","…7495","H","Airbnb",null],
 ["2026-08-30","2026-09-03","6F","…5313","M","Airbnb",null],
-["2026-08-15","2026-09-04","1F","julia hussmann-medrano","H","Booking","성인 2 · 아동 3"],
-["2026-09-04","2026-09-05","1F","1박 신규","H","Airbnb","1박"],
-["2026-09-07","2026-09-17","1F","Nowak Patrick","H","Booking","성인 4"],
+["2026-08-15","2026-09-04","1F","julia hussmann-medrano","M","Booking","성인 2 · 아동 3"],
+["2026-09-05","2026-09-06","1F","1박 신규","M","Airbnb","1박"],
+["2026-09-07","2026-09-17","1F","Nowak Patrick","M","Booking","성인 4"],
 ["2026-09-18","2026-09-20","1F","…3699","M","Airbnb",null],
 ["2026-08-28","2026-09-11","2F","Maricela","M","Vrbo",null],
 ["2026-09-11","2026-09-17","2F","…2331","M","Airbnb",null],
@@ -260,7 +286,7 @@ const BOOKINGS = [
 ["2026-09-05","2026-09-13","3F","…9798","M","Airbnb",null],
 ["2026-09-13","2026-09-16","3F","Thomas","M","Vrbo",null],
 ["2026-09-16","2026-09-20","3F","…2099","M","Airbnb",null],
-["2026-09-21","2026-09-30","3F","Marika Dereń","H","Booking","성인 4"],
+["2026-09-21","2026-09-30","3F","Marika Dereń","M","Booking","성인 4"],
 ["2026-08-31","2026-09-05","5F","…9773","M","Airbnb",null],
 ["2026-09-05","2026-09-06","5F","Robin Kim","H","Booking","성인 4"],
 ["2026-09-06","2026-09-10","5F","…9503","M","Airbnb",null],
@@ -269,9 +295,11 @@ const BOOKINGS = [
 ["2026-09-19","2026-09-20","5F","임*아","H","Yanolja","성인 2"],
 ["2026-09-20","2026-09-25","5F","…2062","M","Airbnb",null],
 ["2026-09-25","2026-09-28","5F","Shoshana Reuven","M","Booking","성인 4"],
+["2026-09-29","2026-09-30","5F","1박 신규","H","Airbnb","1박"],
 ["2026-09-04","2026-09-11","6F","…7535","M","Airbnb",null],
+["2026-09-11","2026-09-12","6F","1박 신규","H","Airbnb","1박"],
 ["2026-09-12","2026-09-13","6F","Elizabeth Day","H","Booking","성인 5"],
-["2026-09-13","2026-09-17","6F","…9666","M","Airbnb",null],
+["2026-09-13","2026-09-17","6F","…9666","H","Airbnb",null],
 ["2026-09-17","2026-09-23","6F","Golden Janggut","M","Booking","성인 5"],
 ["2026-09-24","2026-10-02","6F","…7654","M","Airbnb",null],
 ["2026-10-04","2026-10-07","1F","…3839","M","Airbnb",null],
@@ -361,11 +389,12 @@ function renderCalendar(){
     const maxShow = 3;
     for(let i = 0; i < Math.min(events.length, maxShow); i++){
       const e = events[i];
-      let cls = e.cleaner === "H" ? "mom" : e.cleaner === "O" ? "orange-c" : `p-${e.floor}`;
+      let cls = e.cleaner === "H" ? "mom" : e.cleaner === "O" ? "orange-c" : `p-${e.floor} moono-pill`;
       const tn = e.turnover ? " turnover" : "";
       let label = e.floor;
       if(e.cleaner === "H") label = `${e.floor}·엄마`;
       else if(e.cleaner === "O") label = `${e.floor}·오렌지`;
+      else label = `${e.floor}·M`;
       html += `<div class="evt-pill ${cls}${tn}">${label}</div>`;
     }
     if(events.length > maxShow){
