@@ -145,6 +145,7 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
     <div class="tab" data-month="8">8월</div>
     <div class="tab active" data-month="9">9월</div>
     <div class="tab" data-month="10">10월</div>
+    <div class="tab" data-month="11">11월</div>
   </div>
 </header>
 <div class="filter-bar">
@@ -173,6 +174,22 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
   </div>
   <div class="msg-box" id="msgBox"></div>
   <button class="copy-btn" id="copyBtn">📋 카톡용 메시지 복사하기</button>
+</div>
+
+<div class="kakao-section" style="border-color: #7a9b6e;">
+  <h3>📋 월별 정산 명세서</h3>
+  <div class="kakao-sub">청소인에게 전달할 공식 정산 명세서 · 원천세 3.3% 자동 계산</div>
+  <div class="cleaner-tabs">
+    <div class="cleaner-tab active" data-settle-cleaner="M">Moono</div>
+    <div class="cleaner-tab" data-settle-cleaner="H">엄마</div>
+    <div class="cleaner-tab" data-settle-cleaner="O">최주희</div>
+  </div>
+  <div class="cleaner-tabs" style="margin-top:8px;">
+    <div class="cleaner-tab" data-settle-lang="ko">🇰🇷 한글</div>
+    <div class="cleaner-tab active" data-settle-lang="en">🇬🇧 English</div>
+  </div>
+  <div class="msg-box" id="settleBox"></div>
+  <button class="copy-btn" id="copySettleBtn" style="background:#7a9b6e; color:white;">📋 정산 명세서 복사하기</button>
 </div>
 
 <div class="kakao-section" style="border-color: #b8a56b;">
@@ -248,14 +265,18 @@ const BOOKINGS = [
 ["2026-08-28","2026-08-31","4F","3박 예약","O","?","3박 · 4명"],
 ["2026-09-05","2026-09-12","4F","…9633","O","Airbnb","7박"],
 ["2026-09-12","2026-09-14","4F","…2599","O","Airbnb","2박"],
-["2026-09-15","2026-09-20","4F","…9621","O","Airbnb","5박"],
-["2026-09-23","2026-09-26","4F","…2553","O","Airbnb","3박"],
-["2026-09-26","2026-09-30","4F","…2113","O","Airbnb","4박"],
-["2026-10-02","2026-10-09","4F","…9959","O","Airbnb","7박"],
-["2026-10-09","2026-10-11","4F","…0425","O","Airbnb","2박"],
-["2026-10-13","2026-10-22","4F","…2424","O","Airbnb","9박"],
-["2026-10-24","2026-10-27","4F","…5189","O","Airbnb","3박"],
-["2026-10-27","2026-11-02","4F","…5082","O","Airbnb","6박"],
+["2026-09-15","2026-09-17","4F","Juan Angel","O","Airbnb","2박"],
+["2026-09-18","2026-09-21","4F","Dorina","O","Airbnb","3박"],
+["2026-09-23","2026-09-26","4F","Natasha 님 외","O","Airbnb","3박"],
+["2026-09-26","2026-09-30","4F","Beauty","O","Airbnb","4박"],
+["2026-10-02","2026-10-09","4F","Gaurav","O","Airbnb","성인 2"],
+["2026-10-09","2026-10-11","4F","Alex","O","Airbnb","성인 2"],
+["2026-10-13","2026-10-22","4F","Reytisya","O","Airbnb","성인 5"],
+["2026-10-22","2026-10-24","4F","신규","O","Airbnb","성인 2"],
+["2026-10-24","2026-10-27","4F","Kelly","O","Airbnb","성인 2"],
+["2026-10-31","2026-11-03","4F","Kaixin","O","Airbnb","성인 3"],
+["2026-11-03","2026-11-11","4F","Jacqueline","O","Airbnb","8박"],
+["2026-11-18","2026-11-22","4F","Nur","O","Airbnb","4박"],
 ["2026-07-30","2026-08-06","5F","…3515","H","Airbnb",null],
 ["2026-08-07","2026-08-08","5F","…8332","H","Airbnb",null],
 ["2026-08-08","2026-08-09","5F","…3986","H","Airbnb",null],
@@ -279,8 +300,10 @@ const BOOKINGS = [
 ["2026-09-05","2026-09-06","1F","1박 신규","M","Airbnb","1박"],
 ["2026-09-07","2026-09-17","1F","Nowak Patrick","M","Booking","성인 4"],
 ["2026-09-18","2026-09-20","1F","…3699","M","Airbnb",null],
+["2026-09-21","2026-10-04","1F","Dvořáková Barbora","H","Booking","성인 3"],
 ["2026-08-28","2026-09-11","2F","Maricela","M","Vrbo",null],
 ["2026-09-11","2026-09-17","2F","…2331","M","Airbnb",null],
+["2026-09-18","2026-09-19","2F","1박 신규","M","Airbnb","1박"],
 ["2026-09-19","2026-09-27","2F","…9586","M","Airbnb",null],
 ["2026-09-04","2026-09-05","3F","1박 신규","H","?","1박"],
 ["2026-09-05","2026-09-13","3F","…9798","M","Airbnb",null],
@@ -301,25 +324,33 @@ const BOOKINGS = [
 ["2026-09-12","2026-09-13","6F","Elizabeth Day","H","Booking","성인 5"],
 ["2026-09-13","2026-09-17","6F","…9666","H","Airbnb",null],
 ["2026-09-17","2026-09-23","6F","Golden Janggut","M","Booking","성인 5"],
-["2026-09-24","2026-10-02","6F","…7654","M","Airbnb",null],
+["2026-09-24","2026-10-02","6F","…7654","H","Airbnb",null],
 ["2026-10-04","2026-10-07","1F","…3839","M","Airbnb",null],
+["2026-10-08","2026-10-21","1F","Jack Hamilton","M","Booking","성인 3"],
 ["2026-10-10","2026-10-16","2F","…2668","M","Airbnb",null],
-["2026-10-27","2026-10-31","2F","…4540","M","Airbnb",null],
-["2026-10-02","2026-10-09","3F","…0469","M","Airbnb",null],
-["2026-10-09","2026-10-14","3F","…4681","M","Airbnb",null],
+["2026-10-16","2026-10-20","2F","Daniel Hasson","M","Booking","성인 2"],
+["2026-10-20","2026-10-27","2F","Jeremy Bataille","M","Booking","성인 2 · 아동 2"],
+["2026-10-27","2026-10-31","2F","Catriona Lindsay","M","Airbnb","4박"],
+["2026-10-31","2026-11-04","2F","Qian","M","Airbnb","4박"],
+["2026-10-02","2026-10-09","3F","Jameel","M","Airbnb","7박"],
+["2026-10-09","2026-10-14","3F","Amélie","M","Airbnb","5박"],
+["2026-10-15","2026-10-19","3F","Mario Lars Hadorn","M","Booking","성인 4"],
 ["2026-10-21","2026-10-27","3F","…0949","M","Airbnb",null],
-["2026-09-30","2026-10-04","5F","…1930","M","Airbnb",null],
+["2026-10-01","2026-10-04","5F","신규","H","Airbnb","3박"],
+["2026-10-04","2026-10-05","5F","Darren Chambers","H","Booking","성인 3"],
 ["2026-10-08","2026-10-16","5F","…8580","M","Airbnb",null],
 ["2026-10-24","2026-10-26","5F","GOTO AARON","M","Booking","성인 6"],
 ["2026-10-27","2026-11-01","5F","…3964","M","Airbnb",null],
-["2026-10-02","2026-10-06","6F","…6072","M","Airbnb",null],
+["2026-10-02","2026-10-04","6F","…6072","H","Airbnb","2박"],
 ["2026-10-07","2026-10-12","6F","…1499","M","Airbnb",null],
 ["2026-10-15","2026-10-19","6F","…9223","M","Airbnb",null],
-["2026-10-24","2026-10-27","6F","…6272","M","Airbnb",null],
-["2026-10-31","2026-11-08","6F","…1648","M","Airbnb",null],
+["2026-10-24","2026-10-27","6F","…6272","H","Airbnb",null],
+["2026-10-31","2026-11-08","6F","Nur Amirah","M","Airbnb","8박"],
+["2026-11-12","2026-11-15","5F","Qiuran","M","Airbnb","3박"],
+["2026-11-12","2026-11-18","2F","Maria Reinaleza","M","Airbnb","6박"],
 ["2026-10-19","2026-10-23","5F","…1380 (5F+6F)","M","Airbnb","독채"],
 ["2026-10-19","2026-10-23","6F","…1380 (5F+6F)","M","Airbnb","독채"],
-["2026-09-28","2026-10-10","2F","Marcelo","H","Vrbo",null],
+["2026-09-28","2026-10-10","2F","Marcelo Carino","M","Vrbo","성인 5"],
 ];
 const RATES = {"1F":40000,"2F":40000,"3F":50000,"4F":45000,"5F":55000,"6F":50000};
 const FLOOR_ORDER = {"1F":1,"2F":2,"3F":3,"4F":4,"5F":5,"6F":6};
@@ -447,6 +478,13 @@ function renderSummary(){
   `;
 }
 
+function extractGuestCount(extra){
+  if(!extra) return null;
+  const m = extra.match(/성인\s*(\d+)|(\d+)명/);
+  if(m) return parseInt(m[1] || m[2], 10);
+  return null;
+}
+
 function renderKakaoMessage(){
   const map = getCheckouts(currentMonth);
   const dates = Object.keys(map).sort();
@@ -464,20 +502,20 @@ function renderKakaoMessage(){
   for(const dateStr of dates){
     const events = map[dateStr].filter(e => e.cleaner === currentCleaner);
     if(events.length === 0) continue;
-    const d = parseDate(dateStr);
-    const dayName = DAY_NAMES[d.getDay()];
-    lines.push(`📅 ${d.getMonth()+1}/${d.getDate()} (${dayName})`);
     for(const e of events){
       count++;
       totalGross += RATES[e.floor];
-      let line = `  · ${e.floor} ${e.name}`;
-      if(e.extra) line += ` (${e.extra})`;
-      if(e.turnover) line += ` ⚡같은날 턴오버`;
+      const ci = parseDate(e.checkin);
+      const co = parseDate(e.checkout);
+      const guests = extractGuestCount(e.extra);
+      let line = `${ci.getMonth()+1}/${ci.getDate()}~${co.getMonth()+1}/${co.getDate()} ${e.nights}박`;
+      if(guests !== null) line += ` 총${guests}명`;
+      line += ` · ${e.floor}`;
       lines.push(line);
     }
-    lines.push(``);
   }
 
+  lines.push(``);
   lines.push(`━━━━━━━━━━━━━━━`);
   lines.push(`총 ${count}건`);
   if(currentCleaner === "M"){
@@ -495,6 +533,131 @@ function renderKakaoMessage(){
   }
 
   document.getElementById("msgBox").textContent = lines.join("\n");
+}
+
+let currentSettleCleaner = "M";
+let currentSettleLang = "en";
+const CLEANER_FULL_NAMES = {"M":"Moono (NYAMBE MOONO)","H":"엄마 (Mom)","O":"최주희 (하우스오렌지)"};
+const DAY_KO = ["일","월","화","수","목","금","토"];
+const DAY_EN = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const MONTH_EN = ["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+function renderSettlementStatement(){
+  const map = getCheckouts(currentMonth);
+  const dates = Object.keys(map).sort();
+  const events = [];
+  for(const dateStr of dates){
+    for(const e of map[dateStr]){
+      if(e.cleaner === currentSettleCleaner) events.push(e);
+    }
+  }
+
+  const cleanerFullName = CLEANER_FULL_NAMES[currentSettleCleaner];
+  const applyTax = currentSettleCleaner === "M";
+  const isKo = currentSettleLang === "ko";
+
+  let totalGross = 0;
+  const byFloor = {};
+  events.forEach(e => {
+    const rate = RATES[e.floor];
+    totalGross += rate;
+    if(!byFloor[e.floor]) byFloor[e.floor] = {count:0, rate:rate, total:0};
+    byFloor[e.floor].count++;
+    byFloor[e.floor].total += rate;
+  });
+  const tax = applyTax ? Math.round(totalGross * 0.033) : 0;
+  const net = totalGross - tax;
+
+  const today = new Date();
+  const todayStr = isKo
+    ? `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`
+    : `${MONTH_EN[today.getMonth()+1]} ${today.getDate()}, ${today.getFullYear()}`;
+
+  const lastDay = new Date(2026, currentMonth, 0).getDate();
+  const periodStr = isKo
+    ? `2026년 ${currentMonth}월 1일 – ${currentMonth}월 ${lastDay}일`
+    : `${MONTH_EN[currentMonth]} 1 – ${lastDay}, 2026`;
+
+  let out = [];
+  const H = isKo ? "청소 용역비 정산 명세서" : "Cleaning Service Statement";
+  out.push("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+  out.push("        STAY PACHIRA");
+  out.push(`   ${H}`);
+  out.push("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+  out.push("");
+  out.push(`${isKo ? "수취인    " : "Prepared for "}: ${cleanerFullName}`);
+  out.push(`${isKo ? "정산기간  " : "Period       "}: ${periodStr}`);
+  out.push(`${isKo ? "발행일    " : "Issue date   "}: ${todayStr}`);
+  out.push("");
+  out.push("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+  out.push(isKo ? "📅 일별 내역" : "📅 DAILY BREAKDOWN");
+  out.push("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+  out.push("");
+  if(isKo){
+    out.push("No.  일자        요일   층    금액");
+  } else {
+    out.push("No.  Date        Day   Floor   Amount");
+  }
+  out.push("─────────────────────────────────────");
+  events.forEach((e, i) => {
+    const co = parseDate(e.checkout);
+    const dayName = isKo ? DAY_KO[co.getDay()] : DAY_EN[co.getDay()];
+    const dateStr = isKo
+      ? `${co.getMonth()+1}월 ${co.getDate()}일`.padEnd(10)
+      : `${MONTH_EN[co.getMonth()+1]} ${co.getDate()}`.padEnd(10);
+    const no = String(i+1).padStart(2);
+    const amt = `₩${RATES[e.floor].toLocaleString()}`;
+    out.push(` ${no}   ${dateStr}  ${dayName.padEnd(4)}  ${e.floor.padEnd(4)}  ${amt}`);
+  });
+  out.push("─────────────────────────────────────");
+  out.push("");
+  out.push("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+  out.push(isKo ? "💰 정산 합계" : "💰 SUMMARY");
+  out.push("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+  out.push("");
+  const totalLabel = isKo ? "총 청소 건수           " : "Total cleanings        ";
+  out.push(`${totalLabel}   :    ${String(events.length).padStart(6)}`);
+  out.push("─────────────────────────────────────");
+  Object.keys(byFloor).sort().forEach(floor => {
+    const f = byFloor[floor];
+    const line = `${floor.padEnd(3)} × ${String(f.count).padEnd(2)} @ ₩${f.rate.toLocaleString().padStart(6)}   =   ₩${f.total.toLocaleString().padStart(8)}`;
+    out.push(line);
+  });
+  out.push("─────────────────────────────────────");
+  const subLabel = isKo ? "소계 (Gross)              " : "Subtotal                  ";
+  out.push(`${subLabel}=   ₩${totalGross.toLocaleString().padStart(8)}`);
+  if(applyTax){
+    const taxLabel = isKo ? "원천세 3.3% 공제          " : "Withholding tax (3.3%)    ";
+    out.push(`${taxLabel}=  -₩${tax.toLocaleString().padStart(8)}`);
+    out.push("─────────────────────────────────────");
+    const netLabel = isKo ? "실지급액 (NET)            " : "NET PAYMENT               ";
+    out.push(`${netLabel}=   ₩${net.toLocaleString().padStart(8)}`);
+  } else {
+    out.push("─────────────────────────────────────");
+    const netLabel = isKo ? "총 정산액                 " : "TOTAL                     ";
+    out.push(`${netLabel}=   ₩${net.toLocaleString().padStart(8)}`);
+  }
+  out.push("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+  out.push("");
+  out.push(`${isKo ? "지급 방법   " : "Payment method  "}: ${isKo ? "계좌이체" : "Bank transfer"}`);
+  out.push(`${isKo ? "지급 예정일 " : "Expected date   "}: (${isKo ? "기입" : "fill in"})`);
+  out.push("");
+  const cleanerShortName = currentSettleCleaner === "M" ? "Moono" : (currentSettleCleaner === "H" ? "엄마" : "최주희");
+  if(isKo){
+    out.push(`${currentMonth}월 한 달 정말 수고 많으셨습니다.`);
+    out.push(`감사드려요, ${cleanerShortName}님! 🍊💛`);
+  } else {
+    out.push(`Thank you so much for your dedication`);
+    out.push(`throughout ${MONTH_EN[currentMonth]}, ${cleanerShortName}! 🍊💛`);
+  }
+  out.push("");
+  out.push("— Elle, Stay Pachira");
+
+  if(events.length === 0){
+    out = [isKo ? `${currentMonth}월 정산 내역이 없어요.` : `No cleanings for ${MONTH_EN[currentMonth]}.`];
+  }
+
+  document.getElementById("settleBox").textContent = out.join("\n");
 }
 
 function renderTaxReport(){
@@ -634,6 +797,7 @@ document.querySelectorAll(".tab").forEach(tab => {
     renderSummary();
     renderKakaoMessage();
     renderTaxReport();
+    renderSettlementStatement();
   });
 });
 
@@ -693,8 +857,34 @@ document.getElementById("copyTaxBtn").addEventListener("click", () => {
   copyToClipboard(document.getElementById("taxBox").textContent, document.getElementById("copyTaxBtn"), "✅ 복사됐어요! 세무사에게 전달하세요");
 });
 
+document.querySelectorAll("[data-settle-cleaner]").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll("[data-settle-cleaner]").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    currentSettleCleaner = tab.dataset.settleCleaner;
+    currentSettleLang = currentSettleCleaner === "M" ? "en" : "ko";
+    document.querySelectorAll("[data-settle-lang]").forEach(t => {
+      t.classList.toggle("active", t.dataset.settleLang === currentSettleLang);
+    });
+    renderSettlementStatement();
+  });
+});
+
+document.querySelectorAll("[data-settle-lang]").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll("[data-settle-lang]").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    currentSettleLang = tab.dataset.settleLang;
+    renderSettlementStatement();
+  });
+});
+
+document.getElementById("copySettleBtn").addEventListener("click", () => {
+  copyToClipboard(document.getElementById("settleBox").textContent, document.getElementById("copySettleBtn"), "✅ 복사됐어요! 정산 명세서 붙여넣으세요");
+});
+
 const now = new Date();
-if(now.getFullYear() === 2026 && [8,9,10].includes(now.getMonth()+1)){
+if(now.getFullYear() === 2026 && [8,9,10,11].includes(now.getMonth()+1)){
   currentMonth = now.getMonth()+1;
   document.querySelectorAll(".tab").forEach(t => {
     t.classList.toggle("active", parseInt(t.dataset.month) === currentMonth);
@@ -705,6 +895,7 @@ renderCalendar();
 renderSummary();
 renderKakaoMessage();
 renderTaxReport();
+renderSettlementStatement();
 </script>
 </body>
 </html>
