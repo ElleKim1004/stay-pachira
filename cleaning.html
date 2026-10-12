@@ -32,6 +32,7 @@
   --f4-bg: #ffdcb9; --f4-fg: #7f3010;
   --f5-bg: #fbe8f0; --f5-fg: #9b325f;
   --f6-bg: #fdf4d7; --f6-fg: #875f19;
+  --carrot-bg: #ffe4d1; --carrot-fg: #c05810;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { background: var(--bg); font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: var(--ink); overflow-x: hidden; }
@@ -78,6 +79,8 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 .evt-pill.mom { background: var(--mom-bg); color: var(--mom-fg); }
 .evt-pill.moono-pill { font-weight: 700; box-shadow: inset 0 0 0 1.5px rgba(40,105,75,0.4); }
 .evt-pill.orange-c { background: var(--orange-bg); color: var(--orange-fg); border: 1px solid var(--orange-fg); }
+.evt-pill.carrot { background: var(--carrot-bg); color: var(--carrot-fg); border: 1px dashed var(--carrot-fg); }
+.pill.carrot .n { color: var(--carrot-fg); }
 .evt-pill.turnover::before { content: "●"; color: var(--orange); font-size: 8px; }
 .evt-more { font-size: 9px; color: var(--ink-soft); padding: 1px 4px; }
 .money-summary { margin: 16px 16px 0; padding: 14px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
@@ -113,6 +116,7 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 .detail-card.turnover { border-color: var(--orange); border-width: 2px; }
 .detail-card.mom { background: var(--mom-bg); border-color: #ccc; }
 .detail-card.orange-c { background: var(--orange-bg); border-color: var(--orange-fg); }
+.detail-card.carrot { background: var(--carrot-bg); border-color: var(--carrot-fg); border-style: dashed; }
 .detail-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .detail-floor { font-size: 15px; font-weight: 700; padding: 4px 10px; border-radius: 6px; }
 .detail-floor.f-1F { background: var(--f1-bg); color: var(--f1-fg); }
@@ -126,6 +130,7 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 .detail-cleaner-tag { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; background: var(--green); color: white; }
 .detail-cleaner-tag.mom { background: var(--mom-fg); }
 .detail-cleaner-tag.orange-c { background: var(--orange-fg); }
+.detail-cleaner-tag.carrot { background: var(--carrot-fg); }
 .detail-info { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; font-size: 13px; padding-top: 8px; border-top: 1px dashed var(--line); }
 .detail-info dt { color: var(--ink-soft); }
 .detail-info dd { color: var(--ink); font-weight: 500; }
@@ -152,6 +157,7 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
   <div class="chip active" data-filter="all">전체</div>
   <div class="chip" data-filter="M">Moono</div>
   <div class="chip" data-filter="H">엄마</div>
+  <div class="chip" data-filter="D">당근</div>
   <div class="chip" data-filter="O">하우스오렌지</div>
   <div class="chip" data-filter="turnover">같은날 턴오버</div>
 </div>
@@ -169,8 +175,9 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
   <div class="kakao-sub">담당자 선택 후 복사 → 카톡 붙여넣기</div>
   <div class="cleaner-tabs">
     <div class="cleaner-tab active" data-cleaner="M">Moono</div>
+    <div class="cleaner-tab" data-cleaner="D">당근</div>
     <div class="cleaner-tab" data-cleaner="H">엄마</div>
-    <div class="cleaner-tab" data-cleaner="O">최주희 (하우스오렌지)</div>
+    <div class="cleaner-tab" data-cleaner="O">최주희</div>
   </div>
   <div class="msg-box" id="msgBox"></div>
   <button class="copy-btn" id="copyBtn">📋 카톡용 메시지 복사하기</button>
@@ -197,6 +204,7 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
   <div class="kakao-sub">지급자: (주)스테이파키라 · 3.3% 원천징수 후 이체 완료</div>
   <div class="cleaner-tabs">
     <div class="cleaner-tab active" data-tax-cleaner="M">Moono (NYAMBE MOONO)</div>
+    <div class="cleaner-tab" data-tax-cleaner="D">당근알바 (한승우·유경숙·마정민 등)</div>
     <div class="cleaner-tab" data-tax-cleaner="O">최주희 (하우스오렌지)</div>
   </div>
   <div class="msg-box" id="taxBox"></div>
@@ -263,16 +271,19 @@ const BOOKINGS = [
 ["2026-08-20","2026-08-24","4F","4박 예약","O","?","4박 · 2명"],
 ["2026-08-24","2026-08-27","4F","David","O","Vrbo","3박"],
 ["2026-08-28","2026-08-31","4F","3박 예약","O","?","3박 · 4명"],
-["2026-09-05","2026-09-12","4F","…9633","O","Airbnb","7박"],
-["2026-09-12","2026-09-14","4F","…2599","O","Airbnb","2박"],
-["2026-09-15","2026-09-17","4F","Juan Angel","O","Airbnb","2박"],
+["2026-08-31","2026-09-04","4F","子一","O","Airbnb","4박 · 성인 3"],
+["2026-09-04","2026-09-05","4F","Isabel","O","Airbnb","1박 · 성인 3"],
+["2026-09-05","2026-09-12","4F","Kuralay","O","Airbnb","7박 · 성인 2"],
+["2026-09-12","2026-09-14","4F","Tie","O","Airbnb","2박 · 성인 4"],
+["2026-09-15","2026-09-18","4F","Juan Angel","O","Airbnb","3박 · 성인 2"],
 ["2026-09-18","2026-09-21","4F","Dorina","O","Airbnb","3박"],
 ["2026-09-23","2026-09-26","4F","Natasha 님 외","O","Airbnb","3박"],
 ["2026-09-26","2026-09-30","4F","Beauty","O","Airbnb","4박"],
 ["2026-10-02","2026-10-09","4F","Gaurav","O","Airbnb","성인 2"],
 ["2026-10-09","2026-10-11","4F","Alex","O","Airbnb","성인 2"],
 ["2026-10-13","2026-10-22","4F","Reytisya","O","Airbnb","성인 5"],
-["2026-10-22","2026-10-24","4F","신규","O","Airbnb","성인 2"],
+["2026-10-22","2026-10-24","4F","Cindy","O","Airbnb","성인 2"],
+["2026-10-29","2026-10-31","4F","Vanessa","O","Airbnb","2박"],
 ["2026-10-24","2026-10-27","4F","Kelly","O","Airbnb","성인 2"],
 ["2026-10-31","2026-11-03","4F","Kaixin","O","Airbnb","성인 3"],
 ["2026-11-03","2026-11-11","4F","Jacqueline","O","Airbnb","8박"],
@@ -300,7 +311,7 @@ const BOOKINGS = [
 ["2026-09-05","2026-09-06","1F","1박 신규","M","Airbnb","1박"],
 ["2026-09-07","2026-09-17","1F","Nowak Patrick","M","Booking","성인 4"],
 ["2026-09-18","2026-09-20","1F","…3699","M","Airbnb",null],
-["2026-09-21","2026-10-04","1F","Dvořáková Barbora","H","Booking","성인 3"],
+["2026-09-21","2026-10-04","1F","Dvořáková Barbora","D","Booking","성인 3 · 당근(Mou Samina Akter) · ₩45,000 지급 (⚠️세금신고X·외국인)"],
 ["2026-08-28","2026-09-11","2F","Maricela","M","Vrbo",null],
 ["2026-09-11","2026-09-17","2F","…2331","M","Airbnb",null],
 ["2026-09-18","2026-09-19","2F","1박 신규","M","Airbnb","1박"],
@@ -324,39 +335,46 @@ const BOOKINGS = [
 ["2026-09-12","2026-09-13","6F","Elizabeth Day","H","Booking","성인 5"],
 ["2026-09-13","2026-09-17","6F","…9666","H","Airbnb",null],
 ["2026-09-17","2026-09-23","6F","Golden Janggut","M","Booking","성인 5"],
-["2026-09-24","2026-10-02","6F","…7654","H","Airbnb",null],
+["2026-09-24","2026-10-02","6F","…7654","D","Airbnb","당근(한승우) · ₩48,350 지급 (3.3% 공제)"],
 ["2026-10-04","2026-10-07","1F","…3839","M","Airbnb",null],
 ["2026-10-08","2026-10-21","1F","Jack Hamilton","M","Booking","성인 3"],
-["2026-10-10","2026-10-16","2F","…2668","M","Airbnb",null],
+["2026-10-10","2026-10-16","2F","Ashikin","M","Airbnb","6박 · 성인 6"],
 ["2026-10-16","2026-10-20","2F","Daniel Hasson","M","Booking","성인 2"],
 ["2026-10-20","2026-10-27","2F","Jeremy Bataille","M","Booking","성인 2 · 아동 2"],
 ["2026-10-27","2026-10-31","2F","Catriona Lindsay","M","Airbnb","4박"],
-["2026-10-31","2026-11-04","2F","Qian","M","Airbnb","4박"],
+["2026-10-31","2026-11-04","2F","Qian","D","Airbnb","4박 · 당근 섭외 필요"],
 ["2026-10-02","2026-10-09","3F","Jameel","M","Airbnb","7박"],
 ["2026-10-09","2026-10-14","3F","Amélie","M","Airbnb","5박"],
 ["2026-10-15","2026-10-19","3F","Mario Lars Hadorn","M","Booking","성인 4"],
-["2026-10-21","2026-10-27","3F","…0949","M","Airbnb",null],
-["2026-10-01","2026-10-04","5F","신규","H","Airbnb","3박"],
-["2026-10-04","2026-10-05","5F","Darren Chambers","H","Booking","성인 3"],
-["2026-10-08","2026-10-16","5F","…8580","M","Airbnb",null],
+["2026-10-21","2026-10-27","3F","Enok","M","Airbnb","6박"],
+["2026-10-01","2026-10-04","5F","신규","D","Airbnb","3박 · 당근(유경숙) · ₩48,350 지급 (3.3% 공제)"],
+["2026-10-04","2026-10-05","5F","Darren Chambers","H","Booking","성인 3 · 청소: 엄마 (1박룰)"],
+["2026-10-06","2026-10-08","5F","Andreas","M","Airbnb","2박 · 청소: Moono (복귀 첫 청소)"],
+["2026-10-08","2026-10-16","5F","Lisa","M","Airbnb","8박"],
+["2026-10-16","2026-10-19","5F","Manav","D","Airbnb","3박 · 성인 2 · 당근 섭외 필요"],
+["2026-10-23","2026-10-24","5F","현우","D","Airbnb","1박 · 당근 섭외 필요"],
 ["2026-10-24","2026-10-26","5F","GOTO AARON","M","Booking","성인 6"],
-["2026-10-27","2026-11-01","5F","…3964","M","Airbnb",null],
-["2026-10-02","2026-10-04","6F","…6072","H","Airbnb","2박"],
-["2026-10-07","2026-10-12","6F","…1499","M","Airbnb",null],
-["2026-10-15","2026-10-19","6F","…9223","M","Airbnb",null],
-["2026-10-24","2026-10-27","6F","…6272","H","Airbnb",null],
-["2026-10-31","2026-11-08","6F","Nur Amirah","M","Airbnb","8박"],
-["2026-11-12","2026-11-15","5F","Qiuran","M","Airbnb","3박"],
-["2026-11-12","2026-11-18","2F","Maria Reinaleza","M","Airbnb","6박"],
-["2026-10-19","2026-10-23","5F","…1380 (5F+6F)","M","Airbnb","독채"],
-["2026-10-19","2026-10-23","6F","…1380 (5F+6F)","M","Airbnb","독채"],
+["2026-10-27","2026-11-01","5F","Pakapol","D","Airbnb","5박 · 당근 섭외 필요"],
+["2026-11-02","2026-11-06","5F","Jordana","D","Airbnb","4박 · 당근 섭외 필요"],
+["2026-10-02","2026-10-04","6F","…6072","D","Airbnb","2박 · 당근(마정민) · ₩48,350 지급 (3.3% 공제)"],
+["2026-10-04","2026-10-07","6F","신규","M","Airbnb","3박"],
+["2026-10-07","2026-10-12","6F","Lindsay","M","Airbnb","5박"],
+["2026-10-15","2026-10-19","6F","Aashi","M","Airbnb","4박 · 성인 7"],
+["2026-10-23","2026-10-24","6F","Ricardo","D","Airbnb","1박 · 당근 섭외 필요"],
+["2026-10-24","2026-10-27","6F","Yuki","D","Airbnb","3박 · 당근 섭외 필요 (기존: 엄마 예정)"],
+["2026-10-31","2026-11-08","6F","Nur Amirah","D","Airbnb","8박 · 당근 섭외 필요"],
+["2026-11-12","2026-11-15","5F","Qiuran","D","Airbnb","3박 · 당근 섭외 필요"],
+["2026-11-12","2026-11-18","2F","Maria Reinaleza","D","Airbnb","6박 · 당근 섭외 필요"],
+["2026-11-15","2026-11-23","2F","Henry","D","Airbnb","8박 · 🛏️유아침대+유아침구 ₩20K 결제완료 · 체크인 당일 세팅·체크아웃 당일 제거 필요 · D-7 알림 설정"],
+["2026-10-19","2026-10-23","5F","Cobileanschi (5F+6F)","M","Airbnb","독채 4박"],
+["2026-10-19","2026-10-23","6F","Cobileanschi (5F+6F)","M","Airbnb","독채 4박"],
 ["2026-09-28","2026-10-10","2F","Marcelo Carino","M","Vrbo","성인 5"],
 ];
 const RATES = {"1F":40000,"2F":40000,"3F":50000,"4F":45000,"5F":55000,"6F":50000};
 const FLOOR_ORDER = {"1F":1,"2F":2,"3F":3,"4F":4,"5F":5,"6F":6};
 const DAY_NAMES = ["일","월","화","수","목","금","토"];
-const CLEANER_NAMES = {"M":"Moono","H":"엄마","O":"하우스오렌지"};
-const CLEANER_TAX_NAMES = {"M":"NYAMBE MOONO","O":"최주희"};
+const CLEANER_NAMES = {"M":"Moono","H":"엄마","O":"하우스오렌지","D":"당근 (담당자 섭외)"};
+const CLEANER_TAX_NAMES = {"M":"NYAMBE MOONO","O":"최주희","D":"당근알바 담당자"};
 let currentMonth = 9;
 let currentFilter = "all";
 let currentCleaner = "M";
@@ -420,11 +438,12 @@ function renderCalendar(){
     const maxShow = 3;
     for(let i = 0; i < Math.min(events.length, maxShow); i++){
       const e = events[i];
-      let cls = e.cleaner === "H" ? "mom" : e.cleaner === "O" ? "orange-c" : `p-${e.floor} moono-pill`;
+      let cls = e.cleaner === "H" ? "mom" : e.cleaner === "O" ? "orange-c" : e.cleaner === "D" ? "carrot" : `p-${e.floor} moono-pill`;
       const tn = e.turnover ? " turnover" : "";
       let label = e.floor;
       if(e.cleaner === "H") label = `${e.floor}·엄마`;
       else if(e.cleaner === "O") label = `${e.floor}·오렌지`;
+      else if(e.cleaner === "D") label = `${e.floor}·당근`;
       else label = `${e.floor}·M`;
       html += `<div class="evt-pill ${cls}${tn}">${label}</div>`;
     }
@@ -447,13 +466,14 @@ function renderCalendar(){
 
 function renderSummary(){
   const map = getCheckouts(currentMonth);
-  let total = 0, moono = 0, mom = 0, orange = 0, turns = 0;
-  let mGross = 0, hGross = 0, oGross = 0;
+  let total = 0, moono = 0, mom = 0, orange = 0, carrot = 0, turns = 0;
+  let mGross = 0, hGross = 0, oGross = 0, dGross = 0;
   for(const evs of Object.values(map)){
     for(const e of evs){
       total++;
       if(e.cleaner === "M"){ moono++; mGross += RATES[e.floor]; }
       else if(e.cleaner === "H"){ mom++; hGross += RATES[e.floor]; }
+      else if(e.cleaner === "D"){ carrot++; dGross += RATES[e.floor]; }
       else { orange++; oGross += RATES[e.floor]; }
       if(e.turnover) turns++;
     }
@@ -463,17 +483,21 @@ function renderSummary(){
   document.getElementById("summary").innerHTML = `
     <div class="pill"><div class="n">${total}</div><div class="l">전체</div></div>
     <div class="pill moono"><div class="n">${moono}</div><div class="l">Moono</div></div>
+    <div class="pill carrot"><div class="n">${carrot}</div><div class="l">당근</div></div>
     <div class="pill mom"><div class="n">${mom}</div><div class="l">엄마</div></div>
     <div class="pill orange-c"><div class="n">${orange}</div><div class="l">오렌지</div></div>
-    <div class="pill turn"><div class="n">${turns}</div><div class="l">같은날</div></div>
   `;
+  const dTax = Math.round(dGross * 0.033);
+  const dNet = dGross - dTax;
   document.getElementById("moneySummary").innerHTML = `
     <h3>💰 ${currentMonth}월 예상 청소비</h3>
     <div class="money-row"><span>Moono 총 (${moono}건)</span><span class="amount">₩${mGross.toLocaleString()}</span></div>
     <div class="money-row"><span>원천세 3.3%</span><span class="amount" style="color:var(--orange)">−₩${tax.toLocaleString()}</span></div>
     <div class="money-row net"><span>Moono 실지급</span><span class="amount">₩${net.toLocaleString()}</span></div>
+    <div class="money-row" style="margin-top:8px; padding-top:10px; border-top:1px dashed var(--line);"><span style="color:var(--carrot-fg)">당근 담당 (${carrot}건, 섭외 필요)</span><span class="amount" style="color:var(--carrot-fg)">예상 ₩${dGross.toLocaleString()}</span></div>
+    <div class="money-row"><span style="color:var(--carrot-fg)">└ 3.3% 공제 예상 실지급</span><span class="amount" style="color:var(--carrot-fg)">₩${dNet.toLocaleString()}</span></div>
     <div class="money-row"><span style="color:var(--mom-fg)">엄마 참고 (${mom}건)</span><span class="amount" style="color:var(--mom-fg)">₩${hGross.toLocaleString()}</span></div>
-    <div class="money-row total"><span>파키라 청소비 총액</span><span class="amount">₩${(net + hGross).toLocaleString()}</span></div>
+    <div class="money-row total"><span>파키라 청소비 총액</span><span class="amount">₩${(net + hGross + dNet).toLocaleString()}</span></div>
     <div class="money-row" style="margin-top:8px; padding-top:10px; border-top:1px dashed var(--line);"><span style="color:var(--orange-fg)">하우스오렌지 (${orange}건, 별도 관리)</span><span class="amount" style="color:var(--orange-fg)">참고 ₩${oGross.toLocaleString()}</span></div>
   `;
 }
@@ -489,7 +513,7 @@ function renderKakaoMessage(){
   const map = getCheckouts(currentMonth);
   const dates = Object.keys(map).sort();
   const cleanerName = CLEANER_NAMES[currentCleaner];
-  const emoji = currentCleaner === "M" ? "🧹" : currentCleaner === "H" ? "🏠" : "🍊";
+  const emoji = currentCleaner === "M" ? "🧹" : currentCleaner === "H" ? "🏠" : currentCleaner === "D" ? "🥕" : "🍊";
 
   let lines = [];
   lines.push(`${emoji} ${cleanerName}님 ${currentMonth}월 청소 일정`);
@@ -524,6 +548,11 @@ function renderKakaoMessage(){
     lines.push(`(원천세 3.3% 제외 → 실지급 ₩${(totalGross - tax).toLocaleString()})`);
   } else if(currentCleaner === "H"){
     lines.push(`(엄마 청소분 · 참고 ₩${totalGross.toLocaleString()})`);
+  } else if(currentCleaner === "D"){
+    const tax = Math.round(totalGross * 0.033);
+    lines.push(`당근 섭외 대상 · 예상 ₩${totalGross.toLocaleString()}`);
+    lines.push(`(3.3% 공제 → 실지급 예상 ₩${(totalGross - tax).toLocaleString()})`);
+    lines.push(`※ 각 건별 담당자 섭외 필요`);
   } else {
     lines.push(`(하우스오렌지 청소 담당 · 별도 관리)`);
   }
@@ -736,14 +765,17 @@ function openModal(d, allEvents){
     body.innerHTML = allEvents.map(e => {
       const isMom = e.cleaner === "H";
       const isOrange = e.cleaner === "O";
+      const isCarrot = e.cleaner === "D";
       let clsCard = "detail-card";
       if(e.turnover) clsCard += " turnover";
       if(isMom) clsCard += " mom detail-mom";
       if(isOrange) clsCard += " orange-c";
+      if(isCarrot) clsCard += " carrot";
       const cleanerLbl = CLEANER_NAMES[e.cleaner];
       let cleanerTagCls = "detail-cleaner-tag";
       if(isMom) cleanerTagCls += " mom";
       if(isOrange) cleanerTagCls += " orange-c";
+      if(isCarrot) cleanerTagCls += " carrot";
       const rate = RATES[e.floor];
       const checkinD = parseDate(e.checkin);
       const checkoutD = parseDate(e.checkout);
