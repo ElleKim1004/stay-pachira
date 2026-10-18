@@ -183,17 +183,18 @@ UID:e8f8000ea48a6279b207530afd95e5e9@stay-pachira
 DTSTAMP:20261018T145000Z
 DTSTART;TZID=Asia/Seoul:20261019T180000
 DTEND;TZID=Asia/Seoul:20261019T183000
-SUMMARY:🥕 5F Manav — 당근 당일 입금
-DESCRIPTION:체크아웃: 2026-10-19\n당근 담당 섭외 필요 · 당
- 일 ₩53,185 입금\n(Gross ₩55,000 - 원천세 3.3% ₩1,815)\n층: 5F
+SUMMARY:💙 5F Manav — 손동영 당일 입금
+DESCRIPTION:체크아웃: 2026-10-19\n손동영 부부 담당 · 당일 
+ ₩53,185 입금 필요\n(Gross ₩55,000 - 원천세 3.3% ₩1,815)\n
+ 층: 5F\n세무사 신고 리스트 포함
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:🥕 5F Manav — 당근 당일 입금
+DESCRIPTION:💙 5F Manav — 손동영 당일 입금
 TRIGGER:-PT60M
 END:VALARM
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:🥕 5F Manav — 당근 당일 입금
+DESCRIPTION:💙 5F Manav — 손동영 당일 입금
 TRIGGER:PT0M
 END:VALARM
 END:VEVENT
@@ -268,13 +269,19 @@ UID:cf52e852a130986a80925de86638f055@stay-pachira
 DTSTAMP:20261018T145000Z
 DTSTART;TZID=Asia/Seoul:20261019T180000
 DTEND;TZID=Asia/Seoul:20261019T183000
-SUMMARY:💰 6F Aashi — Moono (월말 일괄)
-DESCRIPTION:체크아웃: 2026-10-19\nMoono 담당 · 월말 일괄 정
- 산\nGross: ₩50,000 / 세후: ₩48,350\n층: 6F\n플랫폼: Airbnb
+SUMMARY:💙 6F Aashi — 손동영 당일 입금
+DESCRIPTION:체크아웃: 2026-10-19\n손동영 부부 담당 · 당일 
+ ₩48,350 입금 필요\n(Gross ₩50,000 - 원천세 3.3% ₩1,650)\n
+ 층: 6F\n세무사 신고 리스트 포함
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:💰 6F Aashi — Moono (월말 일괄)
-TRIGGER:-PT120M
+DESCRIPTION:💙 6F Aashi — 손동영 당일 입금
+TRIGGER:-PT60M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:💙 6F Aashi — 손동영 당일 입금
+TRIGGER:PT0M
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
@@ -391,19 +398,13 @@ UID:0c4583bdd516180ab79b69ff3cfc016e@stay-pachira
 DTSTAMP:20261018T145000Z
 DTSTART;TZID=Asia/Seoul:20261023T180000
 DTEND;TZID=Asia/Seoul:20261023T183000
-SUMMARY:💙 5F Cobileanschi (5F+6F) — 손동영 당일 입금
-DESCRIPTION:체크아웃: 2026-10-23\n손동영 부부 담당 · 당일 
- ₩53,185 입금 필요\n(Gross ₩55,000 - 원천세 3.3% ₩1,815)\n
- 층: 5F\n세무사 신고 리스트 포함
+SUMMARY:💰 5F Cobileanschi (5F+6F) — Moono (월말 일괄)
+DESCRIPTION:체크아웃: 2026-10-23\nMoono 담당 · 월말 일괄 정
+ 산\nGross: ₩55,000 / 세후: ₩53,185\n층: 5F\n플랫폼: Airbnb
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:💙 5F Cobileanschi (5F+6F) — 손동영 당일 입금
-TRIGGER:-PT60M
-END:VALARM
-BEGIN:VALARM
-ACTION:DISPLAY
-DESCRIPTION:💙 5F Cobileanschi (5F+6F) — 손동영 당일 입금
-TRIGGER:PT0M
+DESCRIPTION:💰 5F Cobileanschi (5F+6F) — Moono (월말 일괄)
+TRIGGER:-PT120M
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
@@ -411,19 +412,13 @@ UID:55b7122429d9bb19b2f5db99a43a9af0@stay-pachira
 DTSTAMP:20261018T145000Z
 DTSTART;TZID=Asia/Seoul:20261023T180000
 DTEND;TZID=Asia/Seoul:20261023T183000
-SUMMARY:💙 6F Cobileanschi (5F+6F) — 손동영 당일 입금
-DESCRIPTION:체크아웃: 2026-10-23\n손동영 부부 담당 · 당일 
- ₩48,350 입금 필요\n(Gross ₩50,000 - 원천세 3.3% ₩1,650)\n
- 층: 6F\n세무사 신고 리스트 포함
+SUMMARY:💰 6F Cobileanschi (5F+6F) — Moono (월말 일괄)
+DESCRIPTION:체크아웃: 2026-10-23\nMoono 담당 · 월말 일괄 정
+ 산\nGross: ₩50,000 / 세후: ₩48,350\n층: 6F\n플랫폼: Airbnb
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:💙 6F Cobileanschi (5F+6F) — 손동영 당일 입금
-TRIGGER:-PT60M
-END:VALARM
-BEGIN:VALARM
-ACTION:DISPLAY
-DESCRIPTION:💙 6F Cobileanschi (5F+6F) — 손동영 당일 입금
-TRIGGER:PT0M
+DESCRIPTION:💰 6F Cobileanschi (5F+6F) — Moono (월말 일괄)
+TRIGGER:-PT120M
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
