@@ -33,6 +33,7 @@
   --f5-bg: #fbe8f0; --f5-fg: #9b325f;
   --f6-bg: #fdf4d7; --f6-fg: #875f19;
   --carrot-bg: #ffe4d1; --carrot-fg: #c05810;
+  --son-bg: #d9e8f5; --son-fg: #2a6090;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { background: var(--bg); font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: var(--ink); overflow-x: hidden; }
@@ -80,7 +81,9 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 .evt-pill.moono-pill { font-weight: 700; box-shadow: inset 0 0 0 1.5px rgba(40,105,75,0.4); }
 .evt-pill.orange-c { background: var(--orange-bg); color: var(--orange-fg); border: 1px solid var(--orange-fg); }
 .evt-pill.carrot { background: var(--carrot-bg); color: var(--carrot-fg); border: 1px dashed var(--carrot-fg); }
+.evt-pill.son { background: var(--son-bg); color: var(--son-fg); border: 1px solid var(--son-fg); font-weight: 700; }
 .pill.carrot .n { color: var(--carrot-fg); }
+.pill.son .n { color: var(--son-fg); }
 .evt-pill.turnover::before { content: "●"; color: var(--orange); font-size: 8px; }
 .evt-more { font-size: 9px; color: var(--ink-soft); padding: 1px 4px; }
 .money-summary { margin: 16px 16px 0; padding: 14px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
@@ -117,6 +120,7 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 .detail-card.mom { background: var(--mom-bg); border-color: #ccc; }
 .detail-card.orange-c { background: var(--orange-bg); border-color: var(--orange-fg); }
 .detail-card.carrot { background: var(--carrot-bg); border-color: var(--carrot-fg); border-style: dashed; }
+.detail-card.son { background: var(--son-bg); border-color: var(--son-fg); }
 .detail-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .detail-floor { font-size: 15px; font-weight: 700; padding: 4px 10px; border-radius: 6px; }
 .detail-floor.f-1F { background: var(--f1-bg); color: var(--f1-fg); }
@@ -131,6 +135,7 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 .detail-cleaner-tag.mom { background: var(--mom-fg); }
 .detail-cleaner-tag.orange-c { background: var(--orange-fg); }
 .detail-cleaner-tag.carrot { background: var(--carrot-fg); }
+.detail-cleaner-tag.son { background: var(--son-fg); }
 .detail-info { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; font-size: 13px; padding-top: 8px; border-top: 1px dashed var(--line); }
 .detail-info dt { color: var(--ink-soft); }
 .detail-info dd { color: var(--ink); font-weight: 500; }
@@ -156,6 +161,7 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 <div class="filter-bar">
   <div class="chip active" data-filter="all">전체</div>
   <div class="chip" data-filter="M">Moono</div>
+  <div class="chip" data-filter="S">손동영</div>
   <div class="chip" data-filter="H">엄마</div>
   <div class="chip" data-filter="D">당근</div>
   <div class="chip" data-filter="O">하우스오렌지</div>
@@ -202,10 +208,11 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 <div class="kakao-section" style="border-color: #b8a56b;">
   <h3>🧾 세무사 인건비 신고자료 (담당자별)</h3>
   <div class="kakao-sub">지급자: (주)스테이파키라 · 3.3% 원천징수 후 이체 완료</div>
-  <div class="cleaner-tabs">
-    <div class="cleaner-tab active" data-tax-cleaner="M">Moono (NYAMBE MOONO)</div>
-    <div class="cleaner-tab" data-tax-cleaner="D">당근알바 (한승우·유경숙·마정민 등)</div>
-    <div class="cleaner-tab" data-tax-cleaner="O">최주희 (하우스오렌지)</div>
+  <div class="cleaner-tabs" style="flex-wrap:wrap;">
+    <div class="cleaner-tab active" data-tax-cleaner="M">Moono</div>
+    <div class="cleaner-tab" data-tax-cleaner="D">당근알바</div>
+    <div class="cleaner-tab" data-tax-cleaner="O">최주희</div>
+    <div class="cleaner-tab" data-tax-cleaner="S">손동영 부부</div>
   </div>
   <div class="msg-box" id="taxBox"></div>
   <button class="copy-btn" id="copyTaxBtn" style="background:#b8a56b; color:white;">📋 세무사 신고자료 복사하기</button>
@@ -366,15 +373,16 @@ const BOOKINGS = [
 ["2026-11-12","2026-11-15","5F","Qiuran","D","Airbnb","3박 · 당근 섭외 필요"],
 ["2026-11-12","2026-11-18","2F","Maria Reinaleza","D","Airbnb","6박 · 당근 섭외 필요"],
 ["2026-11-15","2026-11-23","2F","Henry","D","Airbnb","8박 · 🛏️유아침대+유아침구 ₩20K 결제완료 · 체크인 당일 세팅·체크아웃 당일 제거 필요 · D-7 알림 설정"],
-["2026-10-19","2026-10-23","5F","Cobileanschi (5F+6F)","M","Airbnb","독채 4박"],
-["2026-10-19","2026-10-23","6F","Cobileanschi (5F+6F)","M","Airbnb","독채 4박"],
+["2026-10-19","2026-10-23","5F","Cobileanschi (5F+6F)","S","Airbnb","독채 4박 · 손동영 부부 담당 · ₩55,000 (3.3% 공제)"],
+["2026-10-19","2026-10-23","6F","Cobileanschi (5F+6F)","S","Airbnb","독채 4박 · 손동영 부부 담당 · ₩50,000 (3.3% 공제)"],
+["2026-10-21","2026-10-23","1F","신규","M","Airbnb","2박 · 신규 예약"],
 ["2026-09-28","2026-10-10","2F","Marcelo Carino","M","Vrbo","성인 5"],
 ];
 const RATES = {"1F":40000,"2F":40000,"3F":50000,"4F":45000,"5F":55000,"6F":50000};
 const FLOOR_ORDER = {"1F":1,"2F":2,"3F":3,"4F":4,"5F":5,"6F":6};
 const DAY_NAMES = ["일","월","화","수","목","금","토"];
-const CLEANER_NAMES = {"M":"Moono","H":"엄마","O":"하우스오렌지","D":"당근 (담당자 섭외)"};
-const CLEANER_TAX_NAMES = {"M":"NYAMBE MOONO","O":"최주희","D":"당근알바 담당자"};
+const CLEANER_NAMES = {"M":"Moono","H":"엄마","O":"하우스오렌지","D":"당근 (담당자 섭외)","S":"손동영 부부"};
+const CLEANER_TAX_NAMES = {"M":"NYAMBE MOONO","O":"최주희","D":"당근알바 담당자","S":"손동영 부부"};
 let currentMonth = 9;
 let currentFilter = "all";
 let currentCleaner = "M";
@@ -438,12 +446,13 @@ function renderCalendar(){
     const maxShow = 3;
     for(let i = 0; i < Math.min(events.length, maxShow); i++){
       const e = events[i];
-      let cls = e.cleaner === "H" ? "mom" : e.cleaner === "O" ? "orange-c" : e.cleaner === "D" ? "carrot" : `p-${e.floor} moono-pill`;
+      let cls = e.cleaner === "H" ? "mom" : e.cleaner === "O" ? "orange-c" : e.cleaner === "D" ? "carrot" : e.cleaner === "S" ? "son" : `p-${e.floor} moono-pill`;
       const tn = e.turnover ? " turnover" : "";
       let label = e.floor;
       if(e.cleaner === "H") label = `${e.floor}·엄마`;
       else if(e.cleaner === "O") label = `${e.floor}·오렌지`;
       else if(e.cleaner === "D") label = `${e.floor}·당근`;
+      else if(e.cleaner === "S") label = `${e.floor}·손`;
       else label = `${e.floor}·M`;
       html += `<div class="evt-pill ${cls}${tn}">${label}</div>`;
     }
@@ -466,38 +475,44 @@ function renderCalendar(){
 
 function renderSummary(){
   const map = getCheckouts(currentMonth);
-  let total = 0, moono = 0, mom = 0, orange = 0, carrot = 0, turns = 0;
-  let mGross = 0, hGross = 0, oGross = 0, dGross = 0;
+  let total = 0, moono = 0, mom = 0, orange = 0, carrot = 0, son = 0, turns = 0;
+  let mGross = 0, hGross = 0, oGross = 0, dGross = 0, sGross = 0;
   for(const evs of Object.values(map)){
     for(const e of evs){
       total++;
       if(e.cleaner === "M"){ moono++; mGross += RATES[e.floor]; }
       else if(e.cleaner === "H"){ mom++; hGross += RATES[e.floor]; }
       else if(e.cleaner === "D"){ carrot++; dGross += RATES[e.floor]; }
+      else if(e.cleaner === "S"){ son++; sGross += RATES[e.floor]; }
       else { orange++; oGross += RATES[e.floor]; }
       if(e.turnover) turns++;
     }
   }
   const tax = Math.round(mGross * 0.033);
   const net = mGross - tax;
-  document.getElementById("summary").innerHTML = `
+  const summaryHtml = `
     <div class="pill"><div class="n">${total}</div><div class="l">전체</div></div>
     <div class="pill moono"><div class="n">${moono}</div><div class="l">Moono</div></div>
     <div class="pill carrot"><div class="n">${carrot}</div><div class="l">당근</div></div>
-    <div class="pill mom"><div class="n">${mom}</div><div class="l">엄마</div></div>
+    ${son > 0 ? `<div class="pill son"><div class="n">${son}</div><div class="l">손동영</div></div>` : `<div class="pill mom"><div class="n">${mom}</div><div class="l">엄마</div></div>`}
     <div class="pill orange-c"><div class="n">${orange}</div><div class="l">오렌지</div></div>
   `;
+  document.getElementById("summary").innerHTML = summaryHtml;
   const dTax = Math.round(dGross * 0.033);
   const dNet = dGross - dTax;
+  const sTax = Math.round(sGross * 0.033);
+  const sNet = sGross - sTax;
   document.getElementById("moneySummary").innerHTML = `
     <h3>💰 ${currentMonth}월 예상 청소비</h3>
     <div class="money-row"><span>Moono 총 (${moono}건)</span><span class="amount">₩${mGross.toLocaleString()}</span></div>
     <div class="money-row"><span>원천세 3.3%</span><span class="amount" style="color:var(--orange)">−₩${tax.toLocaleString()}</span></div>
     <div class="money-row net"><span>Moono 실지급</span><span class="amount">₩${net.toLocaleString()}</span></div>
+    ${son > 0 ? `<div class="money-row" style="margin-top:8px; padding-top:10px; border-top:1px dashed var(--line);"><span style="color:#2a6090">손동영 부부 (${son}건)</span><span class="amount" style="color:#2a6090">₩${sGross.toLocaleString()}</span></div>
+    <div class="money-row"><span style="color:#2a6090">└ 3.3% 공제 실지급</span><span class="amount" style="color:#2a6090">₩${sNet.toLocaleString()}</span></div>` : ''}
     <div class="money-row" style="margin-top:8px; padding-top:10px; border-top:1px dashed var(--line);"><span style="color:var(--carrot-fg)">당근 담당 (${carrot}건, 섭외 필요)</span><span class="amount" style="color:var(--carrot-fg)">예상 ₩${dGross.toLocaleString()}</span></div>
     <div class="money-row"><span style="color:var(--carrot-fg)">└ 3.3% 공제 예상 실지급</span><span class="amount" style="color:var(--carrot-fg)">₩${dNet.toLocaleString()}</span></div>
     <div class="money-row"><span style="color:var(--mom-fg)">엄마 참고 (${mom}건)</span><span class="amount" style="color:var(--mom-fg)">₩${hGross.toLocaleString()}</span></div>
-    <div class="money-row total"><span>파키라 청소비 총액</span><span class="amount">₩${(net + hGross + dNet).toLocaleString()}</span></div>
+    <div class="money-row total"><span>파키라 청소비 총액</span><span class="amount">₩${(net + hGross + dNet + sNet).toLocaleString()}</span></div>
     <div class="money-row" style="margin-top:8px; padding-top:10px; border-top:1px dashed var(--line);"><span style="color:var(--orange-fg)">하우스오렌지 (${orange}건, 별도 관리)</span><span class="amount" style="color:var(--orange-fg)">참고 ₩${oGross.toLocaleString()}</span></div>
   `;
 }
@@ -694,7 +709,9 @@ function renderTaxReport(){
   const dates = Object.keys(map).sort();
   const cleanerName = CLEANER_NAMES[currentTaxCleaner];
   const taxName = CLEANER_TAX_NAMES[currentTaxCleaner];
-  const jobDesc = currentTaxCleaner === "O" ? "하우스오렌지 4F 청소" : "파키라 청소";
+  const jobDesc = currentTaxCleaner === "O" ? "하우스오렌지 4F 청소"
+                : currentTaxCleaner === "S" ? "스테이파키라 5F·6F 독채 청소 (손동영 부부)"
+                : "파키라 청소";
 
   let lines = [];
   lines.push(`═══════════════════════════════════════`);
@@ -766,24 +783,27 @@ function openModal(d, allEvents){
       const isMom = e.cleaner === "H";
       const isOrange = e.cleaner === "O";
       const isCarrot = e.cleaner === "D";
+      const isSon = e.cleaner === "S";
       let clsCard = "detail-card";
       if(e.turnover) clsCard += " turnover";
       if(isMom) clsCard += " mom detail-mom";
       if(isOrange) clsCard += " orange-c";
       if(isCarrot) clsCard += " carrot";
+      if(isSon) clsCard += " son";
       const cleanerLbl = CLEANER_NAMES[e.cleaner];
       let cleanerTagCls = "detail-cleaner-tag";
       if(isMom) cleanerTagCls += " mom";
       if(isOrange) cleanerTagCls += " orange-c";
       if(isCarrot) cleanerTagCls += " carrot";
+      if(isSon) cleanerTagCls += " son";
       const rate = RATES[e.floor];
       const checkinD = parseDate(e.checkin);
       const checkoutD = parseDate(e.checkout);
       const ciStr = `${checkinD.getMonth()+1}월 ${checkinD.getDate()}일 (${DAY_NAMES[checkinD.getDay()]})`;
       const coStr = `${checkoutD.getMonth()+1}월 ${checkoutD.getDate()}일 (${DAY_NAMES[checkoutD.getDay()]})`;
-      const rateStr = isOrange 
-        ? `₩${rate.toLocaleString()} (별도 관리)` 
-        : `₩${rate.toLocaleString()}${!isMom ? ` (세후 ₩${(rate - Math.round(rate*0.033)).toLocaleString()})` : ''}`;
+      const rateStr = isOrange
+        ? `₩${rate.toLocaleString()} (별도 관리)`
+        : `₩${rate.toLocaleString()}${(!isMom) ? ` (세후 ₩${(rate - Math.round(rate*0.033)).toLocaleString()})` : ''}`;
       return `
         <div class="${clsCard}">
           <div class="detail-top">
