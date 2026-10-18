@@ -203,12 +203,12 @@ UID:9de1b7d439a4786f835afaaeb9348631@stay-pachira
 DTSTAMP:20261018T145000Z
 DTSTART;TZID=Asia/Seoul:20261024T180000
 DTEND;TZID=Asia/Seoul:20261024T183000
-SUMMARY:💰 5F 현우 — Moono (월말 일괄)
-DESCRIPTION:체크아웃: 2026-10-24\nMoono 담당 · 월말 일괄 정
- 산\nGross: ₩55,000 / 세후: ₩53,185\n층: 5F\n플랫폼: Airbnb
+SUMMARY:🏠 5F 현우 — 엄마 청소 (무보수)
+DESCRIPTION:체크아웃: 2026-10-24\n청소: 엄마\n층: 5F\n게스트:
+  현우\n플랫폼: Airbnb
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:💰 5F 현우 — Moono (월말 일괄)
+DESCRIPTION:🏠 5F 현우 — 엄마 청소 (무보수)
 TRIGGER:-PT120M
 END:VALARM
 END:VEVENT
@@ -289,12 +289,12 @@ UID:d5140a09c707a2832a245041f54a64c4@stay-pachira
 DTSTAMP:20261018T145000Z
 DTSTART;TZID=Asia/Seoul:20261024T180000
 DTEND;TZID=Asia/Seoul:20261024T183000
-SUMMARY:💰 6F Ricardo — Moono (월말 일괄)
-DESCRIPTION:체크아웃: 2026-10-24\nMoono 담당 · 월말 일괄 정
- 산\nGross: ₩50,000 / 세후: ₩48,350\n층: 6F\n플랫폼: Airbnb
+SUMMARY:🏠 6F Ricardo — 엄마 청소 (무보수)
+DESCRIPTION:체크아웃: 2026-10-24\n청소: 엄마\n층: 6F\n게스트:
+  Ricardo\n플랫폼: Airbnb
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:💰 6F Ricardo — Moono (월말 일괄)
+DESCRIPTION:🏠 6F Ricardo — 엄마 청소 (무보수)
 TRIGGER:-PT120M
 END:VALARM
 END:VEVENT
