@@ -56,12 +56,12 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 .pill.mom .n { color: var(--mom-fg); }
 .pill.orange-c .n { color: var(--orange-fg); }
 .pill.turn .n { color: var(--orange); }
-.cal-wrap { padding: 0 12px; }
-.cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; padding: 8px 0 6px; font-size: 11px; color: var(--ink-soft); font-weight: 500; }
+.cal-wrap { padding: 0 12px; box-sizing: border-box; width: 100%; max-width: 100vw; }
+.cal-weekdays { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); text-align: center; padding: 8px 0 6px; font-size: 11px; color: var(--ink-soft); font-weight: 500; width: 100%; }
 .cal-weekdays .sun { color: var(--sun); }
 .cal-weekdays .sat { color: var(--sat); }
-.cal { display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid var(--line-soft); border-left: 1px solid var(--line-soft); background: var(--line-soft); gap: 1px; border-radius: 8px; overflow: hidden; }
-.cell { background: var(--card); min-height: 90px; padding: 4px 3px; cursor: pointer; position: relative; transition: background 0.1s; display: flex; flex-direction: column; gap: 2px; }
+.cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-top: 1px solid var(--line-soft); border-left: 1px solid var(--line-soft); background: var(--line-soft); gap: 1px; border-radius: 8px; overflow: hidden; width: 100%; }
+.cell { background: var(--card); min-height: 90px; min-width: 0; padding: 4px 3px; cursor: pointer; position: relative; transition: background 0.1s; display: flex; flex-direction: column; gap: 2px; overflow: hidden; }
 .cell:active { background: #f5f2ea; }
 .cell.not-in-month { background: #f7f5ef; }
 .cell.today { background: linear-gradient(180deg, #fff9e6 0%, #fff 40%); }
@@ -364,7 +364,17 @@ const BOOKINGS = [
 ["2026-10-23","2026-10-24","5F","현우","H","Airbnb","1박 · 엄마 담당"],
 ["2026-10-24","2026-10-26","5F","GOTO AARON","M","Booking","성인 6"],
 ["2026-10-27","2026-11-01","5F","Pakapol","D","Airbnb","5박 · 당근 섭외 필요"],
-["2026-11-02","2026-11-06","5F","Jordana","D","Airbnb","4박 · 당근 섭외 필요"],
+["2026-11-02","2026-11-06","5F","Jordana","D","Airbnb","4박 · 성인 8 · 당근 섭외 필요"],
+["2026-11-06","2026-11-11","5F","Qiuran秋然","D","Airbnb","5박 · 성인 5 · 당근 섭외 필요"],
+["2026-11-11","2026-11-16","5F","Natasya","D","Airbnb","5박 · 성인 7 · 당근 섭외 필요"],
+["2026-11-16","2026-11-20","5F","Farhan","D","Airbnb","4박 · 성인 5 · 당근 섭외 필요"],
+["2026-11-20","2026-11-21","5F","유진","D","Airbnb","1박 · 성인 9 · 당근 섭외 필요"],
+["2026-11-21","2026-11-29","5F","Theodore Peckham","D","Vrbo","8박 · 성인 4 · 아동 1 · 당근 섭외 필요"],
+["2026-11-08","2026-11-09","6F","Andrew","D","Airbnb","1박 · 성인 2 · 당근 섭외 필요"],
+["2026-11-11","2026-11-14","6F","Jeziel","D","Airbnb","3박 · 성인 5 · 당근 섭외 필요"],
+["2026-11-14","2026-11-20","6F","Golda","D","Airbnb","6박 · 성인 6 · 당근 섭외 필요"],
+["2026-11-20","2026-11-26","6F","An","D","Airbnb","6박 · 성인 6 · 당근 섭외 필요"],
+["2026-11-26","2026-11-28","6F","YOKO KAWAKMI","D","Booking","2박 · 성인 5 · 당근 섭외 필요 · 결제완료 ₩572,500"],
 ["2026-10-02","2026-10-04","6F","…6072","D","Airbnb","2박 · 당근(마정민) · ₩48,350 지급 (3.3% 공제)"],
 ["2026-10-04","2026-10-07","6F","신규","M","Airbnb","3박"],
 ["2026-10-07","2026-10-12","6F","Lindsay","M","Airbnb","5박"],
@@ -372,7 +382,6 @@ const BOOKINGS = [
 ["2026-10-23","2026-10-24","6F","Ricardo","H","Airbnb","1박 · 엄마 담당"],
 ["2026-10-24","2026-10-27","6F","Yuki","D","Airbnb","3박 · 담당: Pagada Padonay (F-1 비자, 2룸 ₩45,000) · 3.3% 공제 ₩43,515 당일 지급 · 세금신고 X"],
 ["2026-10-31","2026-11-08","6F","Nur Amirah","D","Airbnb","8박 · 당근 섭외 필요"],
-["2026-11-12","2026-11-15","5F","Qiuran","D","Airbnb","3박 · 당근 섭외 필요"],
 ["2026-11-12","2026-11-18","2F","Maria Reinaleza","D","Airbnb","6박 · 당근 섭외 필요"],
 ["2026-11-15","2026-11-23","2F","Henry","D","Airbnb","8박 · 🛏️유아침대+유아침구 ₩20K 결제완료 · 체크인 당일 세팅·체크아웃 당일 제거 필요 · D-7 알림 설정"],
 ["2026-10-19","2026-10-23","5F","Cobileanschi (5F+6F)","M","Airbnb","독채 4박 · Moono 담당"],
