@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#9b325f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="5F 청소">
+<title>Stay Pachira 5F · 청소 체크리스트</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧹%3C/text%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: #faf7ef;
+  --card: #ffffff;
+  --ink: #2a2a2a;
+  --ink-soft: #767070;
+  --ink-faint: #c9c3bb;
+  --line: #e4ddd0;
+  --line-soft: #efe9dd;
+  --accent: #9b325f;
+  --accent-bg: #fbe8f0;
+  --accent-fg: #7a224a;
+  --warn: #c84646;
+  --warn-bg: #ffeaea;
+  --ok: #28694b;
+  --ok-bg: #e3f5ea;
+  --strict-bg: #fff5e6;
+  --strict-fg: #8a5a00;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { background: var(--bg); font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: var(--ink); overflow-x: hidden; line-height: 1.5; }
+body { min-height: 100vh; padding-bottom: 100px; max-width: 640px; margin: 0 auto; }
+
+header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--line); padding: 14px 16px 10px; }
+.lang-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.title { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+.subtitle { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+.lang-switch { display: inline-flex; background: var(--card); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.lang-btn { padding: 6px 14px; font-size: 12px; font-weight: 600; color: var(--ink-soft); cursor: pointer; border: none; background: transparent; }
+.lang-btn.active { background: var(--accent); color: white; }
+
+.progress-wrap { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin: 12px 16px; }
+.progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.progress-label { font-size: 13px; font-weight: 600; }
+.progress-count { font-size: 18px; font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; }
+.progress-bar { height: 8px; background: var(--line-soft); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent) 0%, var(--ok) 100%); border-radius: 4px; transition: width 0.3s; }
+
+.critical-banner { background: var(--warn-bg); border-left: 4px solid var(--warn); padding: 10px 12px; margin: 0 16px 12px; border-radius: 6px; font-size: 13px; color: var(--warn); }
+.critical-banner b { font-weight: 700; }
+
+.section { background: var(--card); margin: 12px 16px; border-radius: 12px; border: 1px solid var(--line); overflow: hidden; }
+.section-header { padding: 12px 14px; background: var(--line-soft); font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
+.section-header .section-count { font-size: 11px; color: var(--ink-soft); font-weight: 500; }
+.section-body { padding: 4px 0; }
+
+.check-item { display: flex; gap: 12px; padding: 12px 14px; border-top: 1px solid var(--line-soft); align-items: flex-start; cursor: pointer; }
+.check-item:first-child { border-top: none; }
+.check-item.strict { background: var(--strict-bg); }
+.checkbox { flex-shrink: 0; width: 24px; height: 24px; border: 2px solid var(--line); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 2px; transition: all 0.15s; background: white; }
+.check-item.done .checkbox { background: var(--ok); border-color: var(--ok); }
+.check-item.done .checkbox::after { content: "✓"; color: white; font-weight: 800; font-size: 14px; }
+.check-content { flex: 1; }
+.check-text { font-size: 13.5px; color: var(--ink); line-height: 1.5; }
+.check-item.done .check-text { color: var(--ink-faint); text-decoration: line-through; }
+.check-sub { font-size: 11.5px; color: var(--ink-soft); margin-top: 3px; }
+.check-item.done .check-sub { text-decoration: line-through; }
+.strict-tag { display: inline-block; padding: 2px 7px; background: var(--warn); color: white; font-size: 10px; font-weight: 700; border-radius: 10px; margin-left: 4px; vertical-align: 1px; }
+
+.submit-wrap { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(to top, var(--bg) 70%, transparent); z-index: 50; }
+.submit-wrap-inner { max-width: 640px; margin: 0 auto; }
+.submit-btn { width: 100%; padding: 15px; background: var(--accent); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 12px rgba(155, 50, 95, 0.3); }
+.submit-btn:disabled { background: var(--ink-faint); color: var(--card); cursor: not-allowed; box-shadow: none; }
+.submit-btn.ready { background: var(--ok); animation: pulse 2s infinite; box-shadow: 0 2px 12px rgba(40, 105, 75, 0.4); }
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+
+.photo-note { font-size: 12px; color: var(--ink-soft); margin: 8px 16px; padding: 10px 12px; background: var(--card); border-radius: 8px; border: 1px dashed var(--line); }
+
+footer { text-align: center; padding: 20px 16px; font-size: 11px; color: var(--ink-faint); }
+
+.ko .en-only { display: none; }
+.en .ko-only { display: none; }
+</style>
+</head>
+<body class="en">
+
+<header>
+  <div class="lang-row">
+    <div>
+      <div class="title">🧹 Stay Pachira 5F</div>
+      <div class="subtitle">
+        <span class="ko-only">최종 청소 체크리스트</span>
+        <span class="en-only">Final Cleaning Checklist</span>
+      </div>
+    </div>
+    <div class="lang-switch">
+      <button class="lang-btn" id="btnKo">한글</button>
+      <button class="lang-btn active" id="btnEn">EN</button>
+    </div>
+  </div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-top">
+    <span class="progress-label">
+      <span class="ko-only">진행도</span>
+      <span class="en-only">Progress</span>
+    </span>
+    <span class="progress-count"><span id="doneCount">0</span>/<span id="totalCount">0</span></span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="critical-banner">
+  <b>⚠️ <span class="ko-only">꼭 지켜야 할 것</span><span class="en-only">Critical rules</span></b><br>
+  <span class="ko-only">
+    · 세탁물은 <b>12:00 전까지</b> 5F 린넨실에 반출 (마스킹테이프 라벨: <code>층/Used/날짜</code>)<br>
+    · 욕실은 <b>무조건 물청소</b> (건조한 걸레로 닦지 마세요)<br>
+    · 구석·모서리·가구 뒤 먼지와 얼룩까지 꼭 청소
+  </span>
+  <span class="en-only">
+    · Laundry MUST be out at 5F linen room <b>before 12:00 PM</b> (masking tape label: <code>Floor/Used/Date</code>)<br>
+    · Bathrooms MUST be <b>wet-cleaned with water</b> (never dry wipe)<br>
+    · Clean all dust & stains in corners, edges, behind furniture
+  </span>
+</div>
+
+<div id="checklist"></div>
+
+<div class="photo-note">
+  📸 <span class="ko-only">마치기 전 체크리스트 전부 체크 → "완료 보고" 버튼 → 자동 생성된 메시지와 함께 <b>after 사진 5장</b>을 Pachira에 전송해주세요.</span>
+  <span class="en-only">After checking all items → "Submit Report" button → send the auto-generated message with <b>5 after-photos</b> to Pachira.</span>
+</div>
+
+<div class="submit-wrap">
+  <div class="submit-wrap-inner">
+    <button class="submit-btn" id="submitBtn" disabled>
+      <span class="ko-only"><span id="btnTxtKo">0개 더 체크 필요</span></span>
+      <span class="en-only"><span id="btnTxtEn">0 more to check</span></span>
+    </button>
+  </div>
+</div>
+
+<footer>
+  Stay Pachira · 주식회사 파키라하우스 · Itaewon, Seoul<br>
+  🔑 <span class="ko-only">5F 비밀번호 · 린넨실 비번은 Pachira에게 문의</span>
+  <span class="en-only">5F passcode · Linen room passcode: ask Pachira</span>
+</footer>
+
+<script>
+const CHECKLIST = [
+  // Section 1: 입실 & 사전 확인
+  {s:1, strict:false, ko:"비품칸 잠금 상태 확인", en:"Check that supply cabinet is locked", sub_ko:"들어갈 때 열렸으면 끝날 때 반드시 다시 잠그세요", sub_en:"If unlocked when entering, LOCK it again before leaving"},
+  {s:1, strict:false, ko:"체크아웃 전 상태 사진 (BEFORE)", en:"Take BEFORE photos", sub_ko:"손님이 많이 어지른 경우 증빙용", sub_en:"For documentation if the guest left major mess"},
+  {s:1, strict:false, ko:"비품 재고 확인 (청소용품·수건 여분·쓰레기봉투 등)", en:"Check supply stock (cleaner, extra towels, trash bags, etc.)", sub_ko:"다음 청소에 모자랄 것 같으면 Pachira에게 미리 알림", sub_en:"If likely to run out next cleaning, message Pachira in advance"},
+
+  // Section 2: 세탁물 (최우선)
+  {s:2, strict:true, ko:"사용 침구·수건 수거 → 마스킹테이프 라벨 부착", en:"Collect used bedding & towels → attach masking tape label", sub_ko:"포맷: 5F / Used / 11-01", sub_en:"Format: 5F / Used / 11-01"},
+  {s:2, strict:true, ko:"12:00 전까지 5F 린넨실에 반출 ⚠️", en:"Move to 5F linen room BEFORE 12:00 PM ⚠️", sub_ko:"세탁업체 수거 시간 — 늦으면 다음 체크인에 문제 발생", sub_en:"Laundry company pickup time — late = problem for next check-in"},
+  {s:2, strict:false, ko:"린넨실에서 새 침구·수건 가져오기", en:"Pick up new bedding & towels from linen room", sub_ko:"다음 세팅을 위해", sub_en:"For the next setup"},
+
+  // Section 3: 침구 세팅 (5F = 3룸)
+  {s:3, strict:false, ko:"침대 매트리스 커버 교체", en:"Replace mattress covers on all beds", sub_ko:"5F는 3룸 — 침대 수량 확인", sub_en:"5F has 3 rooms — check bed count"},
+  {s:3, strict:false, ko:"이불 커버 새것으로 교체", en:"Replace duvet covers with fresh ones", sub_ko:"구김 없이 반듯하게", sub_en:"Smooth, no wrinkles"},
+  {s:3, strict:false, ko:"베갯잇 전체 교체", en:"Replace all pillowcases", sub_ko:"각 침대 베개 개수에 맞게", sub_en:"Match number of pillows per bed"},
+
+  // Section 4: 수건 세팅
+  {s:4, strict:false, ko:"바디타월 — 성인 1인당 1장", en:"Body towels — 1 per guest", sub_ko:"욕실 수납함에 세워서", sub_en:"Stand upright in bathroom cabinet"},
+  {s:4, strict:false, ko:"페이스타월 — 성인 1인당 3장", en:"Face towels — 3 per guest", sub_ko:"변기 위 상부장 + 건조기 위 타월통에 분배", sub_en:"Split between upper cabinet above toilet + basket on dryer"},
+
+  // Section 5: 욕실 (STRICT)
+  {s:5, strict:true, ko:"욕실 2개 모두 물로 청소 🚿 (건조 걸레 금지)", en:"Wet-clean BOTH bathrooms with water 🚿 (no dry wiping)", sub_ko:"변기·세면대·수전·바닥까지 세정제로", sub_en:"Toilet, sink, faucets, floor — use cleaner"},
+  {s:5, strict:true, ko:"욕실 거울 포함 모든 거울 닦기", en:"Clean ALL mirrors (bathroom + bedroom)", sub_ko:"물자국 없이 깨끗하게", sub_en:"No water marks"},
+  {s:5, strict:true, ko:"욕실 구석·배수구·실리콘 틈새 먼지와 얼룩 확인", en:"Check corners, drains, silicone gaps for dust & stains", sub_ko:"Elle의 집중 포인트", sub_en:"Elle's key focus area"},
+
+  // Section 6: 바닥
+  {s:6, strict:false, ko:"전체 바닥 진공청소기", en:"Vacuum all floors", sub_ko:"3룸 + 거실 + 복도 + 욕실 입구", sub_en:"3 bedrooms + living + hallway + bathroom entrances"},
+  {s:6, strict:false, ko:"진공 후 긴 손잡이 걸레로 물걸레질", en:"After vacuum, mop with long-handled mop", sub_ko:"바닥 얼룩까지 꼼꼼하게", sub_en:"Including floor stains"},
+
+  // Section 7: 가구·먼지 (구석구석)
+  {s:7, strict:true, ko:"안방 테이블·사이드테이블 먼지 제거", en:"Dust bedroom tables & side tables", sub_ko:"테이블 아래/뒤 포함", sub_en:"Including under and behind tables"},
+  {s:7, strict:true, ko:"모든 선반·수납장 위 먼지 제거", en:"Dust all shelves & cabinet tops", sub_ko:"손 닿기 어려운 곳도", sub_en:"Including hard-to-reach spots"},
+  {s:7, strict:true, ko:"가구 뒤·침대 밑 먼지·얼룩 확인", en:"Check for dust/stains behind furniture & under beds", sub_ko:"Elle의 집중 포인트", sub_en:"Elle's key focus area"},
+
+  // Section 8: 쓰레기
+  {s:8, strict:false, ko:"쓰레기봉투 교체 및 배출", en:"Replace trash bags & take out trash", sub_ko:"분리수거 포함", sub_en:"Including recycling"},
+
+  // Section 9: 다음 청소자 준비
+  {s:9, strict:false, ko:"아이템 박스에 다음 청소용 비품 세팅", en:"Pre-set next cleaner's supplies in item box", sub_ko:"청소용품·수건 여분·쓰레기봉투 등", sub_en:"Cleaner, extra towels, trash bags, etc."},
+  {s:9, strict:true, ko:"비품칸 잠금 재확인 🔒", en:"Re-check supply cabinet is LOCKED 🔒", sub_ko:"꼭 잠궜는지 두 번 확인", sub_en:"Double-check before leaving"},
+
+  // Section 10: 마감
+  {s:10, strict:false, ko:"AFTER 사진 5장 촬영", en:"Take 5 AFTER photos", sub_ko:"① 전체 거실 ② 침대 세팅 ③ 수건 세팅 ④ 욕실 ⑤ 바닥", sub_en:"① Living room ② Bed setup ③ Towel setup ④ Bathroom ⑤ Floor"},
+  {s:10, strict:true, ko:"현관문 잠그고 나가기", en:"Lock the front door before leaving", sub_ko:"", sub_en:""},
+];
+
+const SECTIONS = {
+  1: {ko:"① 입실 & 사전 확인", en:"① Entry & Pre-check", icon:"🚪"},
+  2: {ko:"② 세탁물 (최우선 · 12시 전)", en:"② Laundry (Priority · before 12 PM)", icon:"👕"},
+  3: {ko:"③ 침구 세팅 (3룸)", en:"③ Bedding Setup (3 rooms)", icon:"🛏️"},
+  4: {ko:"④ 수건 세팅", en:"④ Towel Setup", icon:"🧺"},
+  5: {ko:"⑤ 욕실 2개 (물청소)", en:"⑤ 2 Bathrooms (wet-clean)", icon:"🚿"},
+  6: {ko:"⑥ 바닥 (진공 → 걸레)", en:"⑥ Floors (vacuum → mop)", icon:"🧹"},
+  7: {ko:"⑦ 가구·먼지 (구석구석)", en:"⑦ Furniture & Dust (every corner)", icon:"✨"},
+  8: {ko:"⑧ 쓰레기", en:"⑧ Trash", icon:"🗑️"},
+  9: {ko:"⑨ 다음 청소자 준비", en:"⑨ Prep for Next Cleaner", icon:"📦"},
+  10: {ko:"⑩ 마감 & 사진 전송", en:"⑩ Finish & Send Photos", icon:"📸"},
+};
+
+const STORAGE_KEY = "sp-5f-checklist-" + new Date().toISOString().slice(0,10);
+let lang = "en";
+let checked = new Set();
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) checked = new Set(JSON.parse(raw));
+    const savedLang = localStorage.getItem("sp-5f-lang");
+    if (savedLang) lang = savedLang;
+  } catch(e) {}
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...checked]));
+  } catch(e) {}
+}
+
+function render() {
+  document.body.className = lang;
+  document.getElementById("btnKo").classList.toggle("active", lang === "ko");
+  document.getElementById("btnEn").classList.toggle("active", lang === "en");
+
+  const container = document.getElementById("checklist");
+  container.innerHTML = "";
+  const sectionGroups = {};
+  CHECKLIST.forEach((item, idx) => {
+    if (!sectionGroups[item.s]) sectionGroups[item.s] = [];
+    sectionGroups[item.s].push({...item, idx});
+  });
+
+  Object.keys(sectionGroups).sort((a,b) => +a-+b).forEach(sNum => {
+    const items = sectionGroups[sNum];
+    const sec = SECTIONS[sNum];
+    const doneInSection = items.filter(i => checked.has(i.idx)).length;
+    const html = `
+      <div class="section">
+        <div class="section-header">
+          <span>${sec.icon} ${sec[lang]}</span>
+          <span class="section-count">${doneInSection}/${items.length}</span>
+        </div>
+        <div class="section-body">
+          ${items.map(i => `
+            <div class="check-item ${checked.has(i.idx)?'done':''} ${i.strict?'strict':''}" data-idx="${i.idx}">
+              <div class="checkbox"></div>
+              <div class="check-content">
+                <div class="check-text">
+                  ${i[lang]}${i.strict?'<span class="strict-tag">'+(lang==="ko"?"필수":"MUST")+'</span>':''}
+                </div>
+                ${i['sub_'+lang]?`<div class="check-sub">${i['sub_'+lang]}</div>`:''}
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `;
+    container.insertAdjacentHTML("beforeend", html);
+  });
+
+  container.querySelectorAll(".check-item").forEach(el => {
+    el.addEventListener("click", () => {
+      const idx = +el.dataset.idx;
+      if (checked.has(idx)) checked.delete(idx);
+      else checked.add(idx);
+      saveState();
+      render();
+    });
+  });
+
+  const total = CHECKLIST.length;
+  const done = checked.size;
+  document.getElementById("doneCount").textContent = done;
+  document.getElementById("totalCount").textContent = total;
+  document.getElementById("progressFill").style.width = (done/total*100) + "%";
+
+  const btn = document.getElementById("submitBtn");
+  const remaining = total - done;
+  if (remaining === 0) {
+    btn.disabled = false;
+    btn.classList.add("ready");
+    document.getElementById("btnTxtKo").textContent = "✅ 완료 보고 (Pachira에게 전송)";
+    document.getElementById("btnTxtEn").textContent = "✅ Submit Report (send to Pachira)";
+  } else {
+    btn.disabled = true;
+    btn.classList.remove("ready");
+    document.getElementById("btnTxtKo").textContent = `${remaining}개 더 체크 필요`;
+    document.getElementById("btnTxtEn").textContent = `${remaining} more to check`;
+  }
+}
+
+function buildReportMessage() {
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  if (lang === "ko") {
+    return `🧹 Stay Pachira 5F 청소 완료 보고
+📅 ${dateStr} ${timeStr}
+
+✅ 전체 ${CHECKLIST.length}개 항목 모두 완료
+✅ 욕실 2개 물청소 완료
+✅ 세탁물 12시 전 린넨실 반출 완료
+✅ 비품칸 잠금 완료
+
+📸 after 사진 5장 함께 전송드립니다:
+① 전체 거실
+② 침대 세팅
+③ 수건 세팅
+④ 욕실
+⑤ 바닥
+
+Pachira님 확인 부탁드립니다 🙏`;
+  }
+  return `🧹 Stay Pachira 5F — Cleaning Completion Report
+📅 ${dateStr} ${timeStr}
+
+✅ All ${CHECKLIST.length} items completed
+✅ Both bathrooms wet-cleaned
+✅ Laundry moved to linen room before 12 PM
+✅ Supply cabinet locked
+
+📸 Sending 5 AFTER photos:
+① Living room
+② Bed setup
+③ Towel setup
+④ Bathroom
+⑤ Floor
+
+Pachira, please confirm 🙏`;
+}
+
+document.getElementById("submitBtn").addEventListener("click", async () => {
+  const msg = buildReportMessage();
+  try {
+    await navigator.clipboard.writeText(msg);
+    alert(lang==="ko"
+      ? "✅ 완료 보고 메시지가 복사되었습니다!\n\nPachira의 WhatsApp에 붙여넣기 → after 사진 5장 함께 전송해주세요.\n\n수고하셨습니다 🙏"
+      : "✅ Report message copied!\n\nPaste into Pachira's WhatsApp → send with 5 after-photos.\n\nThank you for your hard work 🙏");
+  } catch(e) {
+    prompt(lang==="ko" ? "복사해서 Pachira에게 보내주세요:" : "Copy and send to Pachira:", msg);
+  }
+  if (confirm(lang==="ko" ? "다음 청소를 위해 체크리스트를 초기화할까요?" : "Reset checklist for next cleaning?")) {
+    checked.clear();
+    saveState();
+    render();
+  }
+});
+
+document.getElementById("btnKo").addEventListener("click", () => {
+  lang = "ko";
+  localStorage.setItem("sp-5f-lang", "ko");
+  render();
+});
+document.getElementById("btnEn").addEventListener("click", () => {
+  lang = "en";
+  localStorage.setItem("sp-5f-lang", "en");
+  render();
+});
+
+loadState();
+render();
+</script>
+</body>
+</html>
