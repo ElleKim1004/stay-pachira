@@ -176,7 +176,7 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 <div class="filter-bar">
   <div class="chip active" data-filter="all">전체</div>
   <div class="chip" data-filter="M">Moono</div>
-  <div class="chip" data-filter="S">손동영</div>
+  <div class="chip" data-filter="P">Pagada</div>
   <div class="chip" data-filter="H">엄마</div>
   <div class="chip" data-filter="D">당근</div>
   <div class="chip" data-filter="O">하우스오렌지</div>
@@ -194,8 +194,9 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 <div class="kakao-section">
   <h3>💬 카톡용 청소 일정 (담당자별)</h3>
   <div class="kakao-sub">담당자 선택 후 복사 → 카톡 붙여넣기</div>
-  <div class="cleaner-tabs">
+  <div class="cleaner-tabs" style="flex-wrap:wrap;">
     <div class="cleaner-tab active" data-cleaner="M">Moono</div>
+    <div class="cleaner-tab" data-cleaner="P">Pagada</div>
     <div class="cleaner-tab" data-cleaner="D">당근</div>
     <div class="cleaner-tab" data-cleaner="H">엄마</div>
     <div class="cleaner-tab" data-cleaner="O">최주희</div>
@@ -207,8 +208,9 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
 <div class="kakao-section" style="border-color: #7a9b6e;">
   <h3>📋 월별 정산 명세서</h3>
   <div class="kakao-sub">청소인에게 전달할 공식 정산 명세서 · 원천세 3.3% 자동 계산</div>
-  <div class="cleaner-tabs">
+  <div class="cleaner-tabs" style="flex-wrap:wrap;">
     <div class="cleaner-tab active" data-settle-cleaner="M">Moono</div>
+    <div class="cleaner-tab" data-settle-cleaner="P">Pagada</div>
     <div class="cleaner-tab" data-settle-cleaner="H">엄마</div>
     <div class="cleaner-tab" data-settle-cleaner="O">최주희</div>
   </div>
@@ -227,7 +229,7 @@ header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-b
     <div class="cleaner-tab active" data-tax-cleaner="M">Moono</div>
     <div class="cleaner-tab" data-tax-cleaner="D">당근알바</div>
     <div class="cleaner-tab" data-tax-cleaner="O">최주희</div>
-    <div class="cleaner-tab" data-tax-cleaner="S">손동영 부부</div>
+    <div class="cleaner-tab" data-tax-cleaner="P">Pagada (참고)</div>
   </div>
   <div class="msg-box" id="taxBox"></div>
   <button class="copy-btn" id="copyTaxBtn" style="background:#b8a56b; color:white;">📋 세무사 신고자료 복사하기</button>
@@ -375,25 +377,25 @@ const BOOKINGS = [
 ["2026-10-04","2026-10-05","5F","Darren Chambers","H","Booking","성인 3 · 청소: 엄마 (1박룰)"],
 ["2026-10-06","2026-10-08","5F","Andreas","M","Airbnb","2박 · 청소: Moono (복귀 첫 청소)"],
 ["2026-10-08","2026-10-16","5F","Lisa","M","Airbnb","8박"],
-["2026-10-16","2026-10-19","5F","Manav","S","Airbnb","3박 · 성인 2 · 손동영 담당 · ₩55,000 (3.3% 공제)"],
+["2026-10-16","2026-10-19","5F","Manav","D","Airbnb","3박 · 성인 2 · 당근(손동영 부부) · ₩55,000 (3.3% 공제)"],
 ["2026-10-23","2026-10-24","5F","현우","H","Airbnb","1박 · 엄마 담당"],
 ["2026-10-24","2026-10-26","5F","GOTO AARON","M","Booking","성인 6"],
-["2026-10-27","2026-11-01","5F","Pakapol","P","Airbnb","5박 · Pagada 담당 (일요일 로테이션) · 3룸 ₩50,000 · 3.3% 공제 ₩48,350"],
+["2026-10-27","2026-11-01","5F","Pakapol","D","Airbnb","5박 · 당근 섭외 완료 · Pagada 담당 (지난 건)"],
 ["2026-11-02","2026-11-06","5F","Jordana","M","Airbnb","4박 · 성인 8 · Moono 담당"],
-["2026-11-06","2026-11-11","5F","Qiuran秋然","M","Airbnb","5박 · 성인 5 · Moono 담당"],
+["2026-11-06","2026-11-11","5F","Qiuran秋然","D","Airbnb","5박 · 성인 5 · 당근 섭외 필요"],
 ["2026-11-11","2026-11-16","5F","Natasya","M","Airbnb","5박 · 성인 7 · Moono 담당"],
 ["2026-11-16","2026-11-20","5F","Farhan","M","Airbnb","4박 · 성인 5 · Moono 담당"],
-["2026-11-20","2026-11-21","5F","유진","M","Airbnb","1박 · 성인 9 · Moono 담당"],
-["2026-11-21","2026-11-29","5F","Theodore Peckham","P","Vrbo","8박 · 성인 4 · 아동 1 · Pagada 담당 (일요일 로테이션) · 3룸 ₩50,000 · 3.3% 공제 ₩48,350"],
-["2026-11-08","2026-11-09","6F","Andrew","M","Airbnb","1박 · 성인 2 · Moono 담당"],
-["2026-11-11","2026-11-14","6F","Jeziel","M","Airbnb","3박 · 성인 5 · Moono 담당"],
+["2026-11-20","2026-11-21","5F","유진","H","Airbnb","1박 · 성인 9 · 엄마 담당 (1박 룰)"],
+["2026-11-21","2026-11-29","5F","Theodore Peckham","D","Vrbo","8박 · 성인 4 · 아동 1 · 당근 섭외 필요"],
+["2026-11-08","2026-11-09","6F","Andrew","H","Airbnb","1박 · 성인 2 · 엄마 담당 (1박 룰)"],
+["2026-11-11","2026-11-14","6F","Jeziel","D","Airbnb","3박 · 성인 5 · 당근 섭외 필요"],
 ["2026-11-14","2026-11-20","6F","Golda","M","Airbnb","6박 · 성인 6 · Moono 담당"],
 ["2026-11-20","2026-11-26","6F","An","M","Airbnb","6박 · 성인 6 · Moono 담당"],
-["2026-11-26","2026-11-28","6F","YOKO KAWAKMI","M","Booking","2박 · 성인 5 · Moono 담당 · 결제완료 ₩572,500"],
+["2026-11-26","2026-11-28","6F","YOKO KAWAKMI","D","Booking","2박 · 성인 5 · 당근 섭외 필요 · 결제완료 ₩572,500"],
 ["2026-10-02","2026-10-04","6F","…6072","D","Airbnb","2박 · 당근(마정민) · ₩48,350 지급 (3.3% 공제)"],
 ["2026-10-04","2026-10-07","6F","신규","M","Airbnb","3박"],
 ["2026-10-07","2026-10-12","6F","Lindsay","M","Airbnb","5박"],
-["2026-10-15","2026-10-19","6F","Aashi","S","Airbnb","4박 · 성인 7 · 손동영 담당 · ₩50,000 (3.3% 공제)"],
+["2026-10-15","2026-10-19","6F","Aashi","D","Airbnb","4박 · 성인 7 · 당근(손동영 부부) · ₩50,000 (3.3% 공제)"],
 ["2026-10-23","2026-10-24","6F","Ricardo","H","Airbnb","1박 · 엄마 담당"],
 ["2026-10-24","2026-10-27","6F","Yuki","P","Airbnb","3박 · 담당: Pagada Padonay (F-1 비자, 2룸 ₩45,000) · 3.3% 공제 ₩43,515 당일 지급 · 세금신고 X"],
 ["2026-10-31","2026-11-08","6F","Nur Amirah","M","Airbnb","8박 · Moono 담당 (당일 3F와 2건)"],
@@ -403,8 +405,7 @@ const BOOKINGS = [
 ["2026-10-19","2026-10-23","6F","Cobileanschi (5F+6F)","M","Airbnb","독채 4박 · Moono 담당"],
 ["2026-10-21","2026-10-23","1F","신규(2박)","M","Airbnb","2박 · Moono 담당 · 10/23 Hudec 체크인과 교차"],
 ["2026-09-28","2026-10-10","2F","Marcelo Carino","M","Vrbo","성인 5"],
-["2026-10-28","2026-10-29","3F","신규(1박)","M","Airbnb","1박 · Moono 담당 · ⚠️날짜 재확인 필요"],
-["2026-11-01","2026-11-02","1F","신규(1박)","M","Airbnb","1박 · Moono 담당"],
+["2026-11-01","2026-11-02","1F","신규(1박)","H","Airbnb","1박 · 엄마 담당 (1박 룰)"],
 ["2026-10-23","2026-11-01","1F","Hudec Gabriela","M","Booking","9박 · 성인 3 · Booking Genius · ₩1,347,000 결제완료 · 수수료 ₩276,135 · Moono 담당"],
 ["2026-11-02","2026-11-11","1F","Mohamed Azmi","M","Booking","9박 · 성인 3+아동 2 (2,4) · Booking Genius · ₩1,294,200 결제완료 · 수수료 ₩265,311 · Moono 담당"],
 ["2026-11-21","2026-12-01","1F","Nathan Sapio","M","Booking","10박 · 성인 4 · Booking Genius · ₩1,449,000 결제완료 · 수수료 ₩297,045 · Moono 담당"],
@@ -412,18 +413,18 @@ const BOOKINGS = [
 ["2026-11-14","2026-11-21","1F","Akimna J","M","Airbnb","7박 · Moono 담당"],
 ["2026-11-11","2026-11-21","2F","Nathan Westerlaken","M","Booking","10박 · 성인 4+아동 1 (8) · Booking Genius · ₩1,860,408 결제완료 · 수수료 ₩381,384 · Moono 담당"],
 ["2026-11-21","2026-11-28","2F","Jason + 4","M","Airbnb","7박 · Moono 담당"],
-["2026-11-01","2026-11-04","3F","Dominique + 4","M","Airbnb","3박 · Moono 담당"],
-["2026-11-05","2026-11-08","3F","辰景 + 5","M","Airbnb","3박 · Moono 담당 (당일 6F와 2건)"],
+["2026-10-28","2026-11-04","3F","Dominique + 4","M","Airbnb","7박 · 10/28 체크인 · Moono 담당"],
+["2026-11-05","2026-11-09","3F","辰景 + 5","M","Airbnb","4박 · 체크아웃 11/09 월요일로 변경 · Moono 담당"],
 ["2026-11-12","2026-11-14","3F","Linh + 6","M","Airbnb","2박 · Moono 담당"],
 ["2026-12-04","2026-12-08","3F","Sasinan Jiraweerawong","M","Booking","4박 · 성인 6 · Booking Genius · ₩1,128,600 결제완료 · 수수료 ₩231,363 · Moono 담당"],
-["2026-12-04","2026-12-13","1F","Wan Yu Ng","P","Booking","9박 · 성인 2 · Booking Genius · ₩1,259,100 결제완료 · 수수료 ₩258,116 · Pagada 담당 (12/13 일요일) · 2룸 ₩45,000"],
+["2026-12-04","2026-12-13","1F","Wan Yu Ng","D","Booking","9박 · 성인 2 · Booking Genius · ₩1,259,100 결제완료 · 수수료 ₩258,116 · 당근 섭외 필요"],
 ["2026-10-30","2026-10-31","6F","신규(1박)","H","Airbnb","1박 · 엄마 담당 · 10/31 Nur Amirah 체크인과 교차"],
 ];
 const RATES = {"1F":40000,"2F":40000,"3F":50000,"4F":45000,"5F":55000,"6F":50000};
 const FLOOR_ORDER = {"1F":1,"2F":2,"3F":3,"4F":4,"5F":5,"6F":6};
 const DAY_NAMES = ["일","월","화","수","목","금","토"];
-const CLEANER_NAMES = {"M":"Moono","H":"엄마","O":"하우스오렌지","D":"당근 (담당자 섭외)","S":"손동영 부부"};
-const CLEANER_TAX_NAMES = {"M":"NYAMBE MOONO","O":"최주희","D":"당근알바 담당자","S":"손동영 부부"};
+const CLEANER_NAMES = {"M":"Moono","H":"엄마","O":"하우스오렌지","D":"당근 (담당자 섭외)","P":"Pagada Padonay"};
+const CLEANER_TAX_NAMES = {"M":"NYAMBE MOONO","O":"최주희","D":"당근알바 담당자","P":"Pagada Padonay"};
 let currentMonth = 9;
 let currentFilter = "all";
 let currentCleaner = "M";
@@ -517,8 +518,8 @@ function renderCalendar(){
 
 function renderSummary(){
   const map = getCheckouts(currentMonth);
-  let total = 0, moono = 0, mom = 0, orange = 0, carrot = 0, son = 0, turns = 0;
-  let mGross = 0, hGross = 0, oGross = 0, dGross = 0, sGross = 0;
+  let total = 0, moono = 0, mom = 0, orange = 0, carrot = 0, son = 0, pagada = 0, turns = 0;
+  let mGross = 0, hGross = 0, oGross = 0, dGross = 0, sGross = 0, pGross = 0;
   for(const evs of Object.values(map)){
     for(const e of evs){
       total++;
@@ -536,26 +537,28 @@ function renderSummary(){
   const summaryHtml = `
     <div class="pill"><div class="n">${total}</div><div class="l">전체</div></div>
     <div class="pill moono"><div class="n">${moono}</div><div class="l">Moono</div></div>
+    <div class="pill pagada"><div class="n">${pagada}</div><div class="l">Pagada</div></div>
     <div class="pill carrot"><div class="n">${carrot}</div><div class="l">당근</div></div>
-    ${son > 0 ? `<div class="pill son"><div class="n">${son}</div><div class="l">손동영</div></div>` : `<div class="pill mom"><div class="n">${mom}</div><div class="l">엄마</div></div>`}
-    <div class="pill orange-c"><div class="n">${orange}</div><div class="l">오렌지</div></div>
+    <div class="pill mom"><div class="n">${mom}</div><div class="l">엄마</div></div>
   `;
   document.getElementById("summary").innerHTML = summaryHtml;
   const dTax = Math.round(dGross * 0.033);
   const dNet = dGross - dTax;
   const sTax = Math.round(sGross * 0.033);
   const sNet = sGross - sTax;
+  const pTax = Math.round(pGross * 0.033);
+  const pNet = pGross - pTax;
   document.getElementById("moneySummary").innerHTML = `
     <h3>💰 ${currentMonth}월 예상 청소비</h3>
     <div class="money-row"><span>Moono 총 (${moono}건)</span><span class="amount">₩${mGross.toLocaleString()}</span></div>
     <div class="money-row"><span>원천세 3.3%</span><span class="amount" style="color:var(--orange)">−₩${tax.toLocaleString()}</span></div>
     <div class="money-row net"><span>Moono 실지급</span><span class="amount">₩${net.toLocaleString()}</span></div>
-    ${son > 0 ? `<div class="money-row" style="margin-top:8px; padding-top:10px; border-top:1px dashed var(--line);"><span style="color:#2a6090">손동영 부부 (${son}건)</span><span class="amount" style="color:#2a6090">₩${sGross.toLocaleString()}</span></div>
-    <div class="money-row"><span style="color:#2a6090">└ 3.3% 공제 실지급</span><span class="amount" style="color:#2a6090">₩${sNet.toLocaleString()}</span></div>` : ''}
+    ${pagada > 0 ? `<div class="money-row" style="margin-top:8px; padding-top:10px; border-top:1px dashed var(--line);"><span style="color:var(--pagada-fg)">Pagada 담당 (${pagada}건)</span><span class="amount" style="color:var(--pagada-fg)">₩${pGross.toLocaleString()}</span></div>
+    <div class="money-row"><span style="color:var(--pagada-fg)">└ 3.3% 공제 실지급 (당일 지급)</span><span class="amount" style="color:var(--pagada-fg)">₩${pNet.toLocaleString()}</span></div>` : ''}
     <div class="money-row" style="margin-top:8px; padding-top:10px; border-top:1px dashed var(--line);"><span style="color:var(--carrot-fg)">당근 담당 (${carrot}건, 섭외 필요)</span><span class="amount" style="color:var(--carrot-fg)">예상 ₩${dGross.toLocaleString()}</span></div>
     <div class="money-row"><span style="color:var(--carrot-fg)">└ 3.3% 공제 예상 실지급</span><span class="amount" style="color:var(--carrot-fg)">₩${dNet.toLocaleString()}</span></div>
     <div class="money-row"><span style="color:var(--mom-fg)">엄마 참고 (${mom}건)</span><span class="amount" style="color:var(--mom-fg)">₩${hGross.toLocaleString()}</span></div>
-    <div class="money-row total"><span>파키라 청소비 총액</span><span class="amount">₩${(net + hGross + dNet + sNet).toLocaleString()}</span></div>
+    <div class="money-row total"><span>파키라 청소비 총액</span><span class="amount">₩${(net + hGross + dNet + pNet).toLocaleString()}</span></div>
     <div class="money-row" style="margin-top:8px; padding-top:10px; border-top:1px dashed var(--line);"><span style="color:var(--orange-fg)">하우스오렌지 (${orange}건, 별도 관리)</span><span class="amount" style="color:var(--orange-fg)">참고 ₩${oGross.toLocaleString()}</span></div>
   `;
 }
@@ -571,7 +574,7 @@ function renderKakaoMessage(){
   const map = getCheckouts(currentMonth);
   const dates = Object.keys(map).sort();
   const cleanerName = CLEANER_NAMES[currentCleaner];
-  const emoji = currentCleaner === "M" ? "🧹" : currentCleaner === "H" ? "🏠" : currentCleaner === "D" ? "🥕" : "🍊";
+  const emoji = currentCleaner === "M" ? "🧹" : currentCleaner === "H" ? "🏠" : currentCleaner === "D" ? "🥕" : currentCleaner === "P" ? "💜" : "🍊";
 
   let lines = [];
   lines.push(`${emoji} ${cleanerName}님 ${currentMonth}월 청소 일정`);
@@ -611,6 +614,11 @@ function renderKakaoMessage(){
     lines.push(`당근 섭외 대상 · 예상 ₩${totalGross.toLocaleString()}`);
     lines.push(`(3.3% 공제 → 실지급 예상 ₩${(totalGross - tax).toLocaleString()})`);
     lines.push(`※ 각 건별 담당자 섭외 필요`);
+  } else if(currentCleaner === "P"){
+    const tax = Math.round(totalGross * 0.033);
+    lines.push(`청소비 ₩${totalGross.toLocaleString()}`);
+    lines.push(`(3.3% 공제 → 실지급 ₩${(totalGross - tax).toLocaleString()})`);
+    lines.push(`※ F-1 비자 · 세금신고 X · 당일 현금/계좌 지급`);
   } else {
     lines.push(`(하우스오렌지 청소 담당 · 별도 관리)`);
   }
@@ -624,7 +632,7 @@ function renderKakaoMessage(){
 
 let currentSettleCleaner = "M";
 let currentSettleLang = "en";
-const CLEANER_FULL_NAMES = {"M":"Moono (NYAMBE MOONO)","H":"엄마 (Mom)","O":"최주희 (하우스오렌지)"};
+const CLEANER_FULL_NAMES = {"M":"Moono (NYAMBE MOONO)","H":"엄마 (Mom)","O":"최주희 (하우스오렌지)","P":"Pagada Padonay (F-1 visa)"};
 const DAY_KO = ["일","월","화","수","목","금","토"];
 const DAY_EN = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const MONTH_EN = ["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -640,7 +648,7 @@ function renderSettlementStatement(){
   }
 
   const cleanerFullName = CLEANER_FULL_NAMES[currentSettleCleaner];
-  const applyTax = currentSettleCleaner === "M";
+  const applyTax = currentSettleCleaner === "M" || currentSettleCleaner === "P";
   const isKo = currentSettleLang === "ko";
 
   let totalGross = 0;
@@ -729,7 +737,7 @@ function renderSettlementStatement(){
   out.push(`${isKo ? "지급 방법   " : "Payment method  "}: ${isKo ? "계좌이체" : "Bank transfer"}`);
   out.push(`${isKo ? "지급 예정일 " : "Expected date   "}: (${isKo ? "기입" : "fill in"})`);
   out.push("");
-  const cleanerShortName = currentSettleCleaner === "M" ? "Moono" : (currentSettleCleaner === "H" ? "엄마" : "최주희");
+  const cleanerShortName = currentSettleCleaner === "M" ? "Moono" : currentSettleCleaner === "H" ? "엄마" : currentSettleCleaner === "P" ? "Pagada" : "최주희";
   if(isKo){
     out.push(`${currentMonth}월 한 달 정말 수고 많으셨습니다.`);
     out.push(`감사드려요, ${cleanerShortName}님! 🍊💛`);
@@ -753,7 +761,7 @@ function renderTaxReport(){
   const cleanerName = CLEANER_NAMES[currentTaxCleaner];
   const taxName = CLEANER_TAX_NAMES[currentTaxCleaner];
   const jobDesc = currentTaxCleaner === "O" ? "하우스오렌지 4F 청소"
-                : currentTaxCleaner === "S" ? "스테이파키라 5F·6F 독채 청소 (손동영 부부)"
+                : currentTaxCleaner === "P" ? "스테이파키라 5F·6F 청소 (Pagada Padonay)"
                 : "파키라 청소";
 
   let lines = [];
